@@ -3,6 +3,7 @@
 #include <time.h>
 #include <conio.h>
 #include <windows.h>
+#include "ansi_escapes.h"
 
 using namespace std;
 
@@ -91,7 +92,9 @@ void draw()
         {
             for (int32_t position_y = 0; position_y < WIDTH + 2; ++position_y)
             {
+                setTextColor(YELLOW_TXT);
                 putchar('#');
+                setTextColor(RESET_COLOR);
             }
             putchar('\n');
             continue;
@@ -100,19 +103,27 @@ void draw()
         {
             if (is_side_border(position_x))
             {
+                setTextColor(YELLOW_TXT);
                 putchar('#');
+                setTextColor(RESET_COLOR);
             }
             else if (is_head(position_y, position_x))
             {
+                setTextColor(RED_TXT);
                 putchar('O');
+                setTextColor(RESET_COLOR);
             }
             else if (is_fruit(position_y, position_x))
             {
-                putchar('@');
+                setTextColor(GREEN_TXT);
+                putchar(254);
+                setTextColor(RESET_COLOR);
             }
             else if (is_tail(position_y, position_x))
             {
+                setTextColor(RED_TXT);
                 putchar('o');
+                setTextColor(RESET_COLOR);
             }
             else
             {
