@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <conio.h>
-#include <windows.h>
+#include <unistd.h>
 #include "ansi_escapes.h"
 
 using namespace std;
@@ -80,7 +80,13 @@ void setup()
     head_y = 1 + HEIGHT / 2;
     generate_fruit();
     direction = STOP;
-    system("cls");
+    printf("\x1b[d");
+    char spaces[PATH_MAX * 2];
+    memset(spaces, ' ', sizeof(spaces));
+    spaces[(PATH_MAX * 2) - 1] = '\0';
+    for (int32_t i = 0; i < HEIGHT; ++i) {
+        printf("%s\n", spaces);
+    }
 }
 
 void draw()
@@ -277,6 +283,6 @@ void next_frame(clock_t start_time)
     clock_t cycle_time = clock() - start_time;
     if (cycle_time < CYCLE_TIME_LIMIT)
     {
-        Sleep(CYCLE_TIME_LIMIT - cycle_time);
+        usleep((CYCLE_TIME_LIMIT - cycle_time) * 1000);
     }
 }
