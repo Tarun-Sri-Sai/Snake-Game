@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ANSI_ESCAPES_H
+#define ANSI_ESCAPES_H
 
 #include <stdio.h>
 
@@ -124,3 +125,5 @@ static inline void restoreCursorPosition(void)
 {
     printf("\x1b%d", 8);
 }
+
+#endif

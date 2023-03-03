@@ -3,7 +3,7 @@
 #include <time.h>
 #include <conio.h>
 #include <unistd.h>
-#include "ansi_escapes.h"
+#include "../lib/ansi_escapes.h"
 
 using namespace std;
 
