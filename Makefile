@@ -3,7 +3,7 @@ all: game.exe
 CXX=g++
 CFLAGS=-Wall -Wextra -Wpedantic -Werror
 
-game.exe: src/game.cpp lib/ansi_escapes.h
+game.exe: src/game.cpp
 	${CXX} ${CFLAGS} $^ -o $@
 
 clean:

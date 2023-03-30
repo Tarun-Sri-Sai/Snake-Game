@@ -3,7 +3,6 @@
 #include <time.h>
 #include <conio.h>
 #include <unistd.h>
-#include "../lib/ansi_escapes.h"
 
 using namespace std;
 
@@ -69,7 +68,7 @@ int32_t main()
     }
     if (score >= MAX_SCORE)
     {
-        printf("\nDamn you really beat the Snake Game! :D\n");
+        cout << "\nDamn you really beat the Snake Game! :D\n";
     }
     return 0;
 }
@@ -81,7 +80,6 @@ void setup()
     head_y = 1 + HEIGHT / 2;
     generate_fruit();
     direction = STOP;
-    printf("\x1b[d");
     string output;
 
     for (int i = 0; i < HEIGHT; i++) {
@@ -90,59 +88,68 @@ void setup()
         }
         output += '\n';
     }
-    cout << output;
+    cout << "\x1b[d" << output;
 }
 
 void draw()
 {
-    printf("\x1b[d");
+    string output;
+
     for (int32_t position_y = 0; position_y < HEIGHT + 2; ++position_y)
     {
         if (position_y == 0 || position_y == HEIGHT + 1)
         {
             for (int32_t position_y = 0; position_y < WIDTH + 2; ++position_y)
             {
-                setTextColor(YELLOW_TXT);
-                putchar('#');
-                setTextColor(RESET_COLOR);
+                // setTextColor(YELLOW_TXT);
+                // putchar('#');
+                // setTextColor(RESET_COLOR);
+                output += '#';
             }
-            putchar('\n');
+            // putchar('\n');
+            output += '\n';
             continue;
         }
         for (int32_t position_x = 0; position_x < WIDTH + 2; ++position_x)
         {
             if (is_side_border(position_x))
             {
-                setTextColor(YELLOW_TXT);
-                putchar('#');
-                setTextColor(RESET_COLOR);
+                // setTextColor(YELLOW_TXT);
+                // putchar('#');
+                // setTextColor(RESET_COLOR);
+                output += '#';
             }
             else if (is_head(position_y, position_x))
             {
-                setTextColor(RED_TXT);
-                putchar('O');
-                setTextColor(RESET_COLOR);
+                // setTextColor(RED_TXT);
+                // putchar('O');
+                // setTextColor(RESET_COLOR);
+                output += 'O';
             }
             else if (is_fruit(position_y, position_x))
             {
-                setTextColor(GREEN_TXT);
-                putchar(254);
-                setTextColor(RESET_COLOR);
+                // setTextColor(GREEN_TXT);
+                // putchar(254);
+                // setTextColor(RESET_COLOR);
+                output += (char)254;
             }
             else if (is_tail(position_y, position_x))
             {
-                setTextColor(RED_TXT);
-                putchar('o');
-                setTextColor(RESET_COLOR);
+                // setTextColor(RED_TXT);
+                // putchar('o');
+                // setTextColor(RESET_COLOR);
+                output += 'o';
             }
             else
             {
-                putchar(' ');
+                // putchar(' ');
+                output += ' ';
             }
         }
-        putchar('\n');
+        // putchar('\n');
+        output += '\n';
     }
-    cout << "Score: " << score << '\n';
+    cout << "\x1b[d" << output << "Score: " << score << '\n';
 }
 
 bool is_fruit(int32_t position_y, int32_t position_x)
