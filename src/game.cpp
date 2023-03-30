@@ -82,13 +82,15 @@ void setup()
     generate_fruit();
     direction = STOP;
     printf("\x1b[d");
-    char spaces[PATH_MAX * 2];
+    string output;
 
-    memset(spaces, ' ', sizeof(spaces));
-    spaces[(PATH_MAX * 2) - 1] = '\0';
-    for (int32_t i = 0; i < HEIGHT; ++i) {
-        printf("%s\n", spaces);
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < PATH_MAX * 2; j++) {
+            output += ' ';
+        }
+        output += '\n';
     }
+    cout << output;
 }
 
 void draw()
