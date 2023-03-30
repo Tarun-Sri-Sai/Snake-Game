@@ -61,6 +61,7 @@ int32_t main()
     while (!game_over && score < MAX_SCORE)
     {
         clock_t start_time = clock();
+        
         draw();
         input();
         logic();
@@ -82,6 +83,7 @@ void setup()
     direction = STOP;
     printf("\x1b[d");
     char spaces[PATH_MAX * 2];
+
     memset(spaces, ' ', sizeof(spaces));
     spaces[(PATH_MAX * 2) - 1] = '\0';
     for (int32_t i = 0; i < HEIGHT; ++i) {
@@ -252,12 +254,14 @@ void update_tail()
 {
     int32_t prev_x = tail_x[0];
     int32_t prev_y = tail_y[0];
+
     tail_x[0] = head_x;
     tail_y[0] = head_y;
     for (int32_t i = 1; i < score; ++i)
     {
         int32_t temp_x = tail_x[i];
         int32_t temp_y = tail_y[i];
+
         tail_x[i] = prev_x;
         tail_y[i] = prev_y;
         prev_x = temp_x;
@@ -281,6 +285,7 @@ void next_frame(clock_t start_time)
 {
     const int32_t CYCLE_TIME_LIMIT = (direction == UP || direction == DOWN ? (int32_t)(FRAME_TIME * 2) : FRAME_TIME);
     clock_t cycle_time = clock() - start_time;
+
     if (cycle_time < CYCLE_TIME_LIMIT)
     {
         usleep((CYCLE_TIME_LIMIT - cycle_time) * 1000);
