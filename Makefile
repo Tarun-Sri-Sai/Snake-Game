@@ -1,10 +1,16 @@
-all: game.exe
-
 CXX=g++
 CFLAGS=-Wall -Wextra -Wpedantic -Werror
+FILE=game
+BIN=bin
+SRC=src
 
-game.exe: src/game.cpp
+all: $(BIN)/$(FILE).exe
+
+$(BIN)/$(FILE).exe: $(SRC)/$(FILE).cpp
 	${CXX} ${CFLAGS} $^ -o $@
+
+run:
+	$(BIN)/$(FILE).exe
 
 clean:
 	del /F /Q game.exe
