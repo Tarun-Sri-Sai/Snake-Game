@@ -3,6 +3,7 @@
 #include <time.h>
 #include <conio.h>
 #include <unistd.h>
+#include <cstdint>
 
 using namespace std;
 
