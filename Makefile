@@ -13,4 +13,4 @@ run:
 	$(BIN)/$(FILE).exe
 
 clean:
-	del /F /Q game.exe
+	rm $(BIN)/*

@@ -9,9 +9,10 @@ using namespace std;
 
 const int32_t WIDTH = 40, HEIGHT = 20;
 const int32_t ESC = 27;
-const int32_t FPS = 15, FRAME_TIME = 1000 / (FPS > 0 ? FPS : 15);
+const int32_t FPS = 10, FRAME_TIME = 1000 / (FPS > 0 ? FPS : 15);
 const int32_t MAX_SCORE = (WIDTH * HEIGHT) / 4;
 
+int32_t delta_time = 1;
 bool game_over;
 int32_t head_x, head_y, fruit_x, fruit_y, score;
 int32_t tail_x[MAX_SCORE + 1], tail_y[MAX_SCORE + 1];
@@ -102,12 +103,8 @@ void draw()
         {
             for (int32_t position_y = 0; position_y < WIDTH + 2; ++position_y)
             {
-                // setTextColor(YELLOW_TXT);
-                // putchar('#');
-                // setTextColor(RESET_COLOR);
                 output += '#';
             }
-            // putchar('\n');
             output += '\n';
             continue;
         }
@@ -115,39 +112,25 @@ void draw()
         {
             if (is_side_border(position_x))
             {
-                // setTextColor(YELLOW_TXT);
-                // putchar('#');
-                // setTextColor(RESET_COLOR);
                 output += '#';
             }
             else if (is_head(position_y, position_x))
             {
-                // setTextColor(RED_TXT);
-                // putchar('O');
-                // setTextColor(RESET_COLOR);
                 output += 'O';
             }
             else if (is_fruit(position_y, position_x))
             {
-                // setTextColor(GREEN_TXT);
-                // putchar(254);
-                // setTextColor(RESET_COLOR);
                 output += (char)254;
             }
             else if (is_tail(position_y, position_x))
             {
-                // setTextColor(RED_TXT);
-                // putchar('o');
-                // setTextColor(RESET_COLOR);
                 output += 'o';
             }
             else
             {
-                // putchar(' ');
                 output += ' ';
             }
         }
-        // putchar('\n');
         output += '\n';
     }
     cout << "\x1b[d" << output << "Score: " << score << '\n';
@@ -183,30 +166,36 @@ void input()
 
 void get_direction_input()
 {
+    e_direction new_direction = direction;
+
     switch (getch())
     {
     case 'a':
-        direction = LEFT;
+        new_direction = LEFT;
         break;
     case 'w':
-        direction = UP;
+        new_direction = UP;
         break;
     case 's':
-        direction = DOWN;
+        new_direction = DOWN;
         break;
     case 'd':
-        direction = RIGHT;
+        new_direction = RIGHT;
         break;
     case ESC:
-        direction = STOP;
         game_over = true;
-        break;
+        return;
+    }
+
+    if (abs(direction - new_direction) != 2)
+    {
+        direction = new_direction;
     }
 }
 
 void logic()
 {
-    if (is_tail(head_y, head_x))
+    if (is_tail(head_y, head_x) || is_tail(fruit_x, fruit_y))
     {
         game_over = true;
     }
