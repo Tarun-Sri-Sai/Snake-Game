@@ -5,6 +5,7 @@
 #include "game.hpp"
 #include <memory>
 #include <SFML/Graphics/Text.hpp>
+#include <array>
 
 enum Options
 {
@@ -25,7 +26,7 @@ public:
 private:
 	std::shared_ptr<GameContext> m_context;
 	sf::Text m_gameTitle;
-	std::vector<std::unique_ptr<sf::Text>> m_options;
+	std::array<sf::Text, 2> m_options;
 	int m_optionsIndex;
 	bool m_optionSelected;
 };

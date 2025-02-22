@@ -1,34 +1,34 @@
 #include "main_menu.hpp"
+#include "game_play.hpp"
 
 MainMenu::MainMenu(std::shared_ptr<GameContext>& t_context) :
 	m_context(t_context),
 	m_gameTitle(t_context->m_assets->getFont(TITLE_FONT), "Snake Game", 60),
 	m_optionsIndex(0),
-	m_optionSelected(false)
+	m_optionSelected(false),
+	m_options{
+		sf::Text(m_context->m_assets->getFont(MENU_FONT), "Play"),
+		sf::Text(m_context->m_assets->getFont(MENU_FONT), "Exit") }
 {
 }
 
 MainMenu::~MainMenu()
 {
-	m_options.clear();
 }
 
 void MainMenu::setup()
 {
 	m_gameTitle.setOrigin(m_gameTitle.getLocalBounds().getCenter());
-	m_gameTitle.setPosition(sf::Vector2f(
+	m_gameTitle.setPosition({
 		m_context->m_window->getSize().x / 2.0f,
-		m_context->m_window->getSize().y / 2.0f - 150.0f));
-
-	m_options.emplace_back(std::make_unique<sf::Text>(m_context->m_assets->getFont(MENU_FONT), "Play"));
-	m_options.emplace_back(std::make_unique<sf::Text>(m_context->m_assets->getFont(MENU_FONT), "Exit"));
+		m_context->m_window->getSize().y / 2.0f - 150.0f });
 
 	for (size_t optionsLength = m_options.size(), i = 0; i < optionsLength; i++)
 	{
-		m_options[i]->setOrigin(m_options[i]->getLocalBounds().getCenter());
-		m_options[i]->setPosition(sf::Vector2f(
+		m_options[i].setOrigin(m_options[i].getLocalBounds().getCenter());
+		m_options[i].setPosition({
 			m_context->m_window->getSize().x / 2.0f,
-			m_context->m_window->getSize().y / 2.0f + ((int)i * 60)));
+			m_context->m_window->getSize().y / 2.0f + ((int)i * 60) });
 	}
 }
 
@@ -66,11 +66,11 @@ void MainMenu::update(sf::Time t_deltaTime)
 	{
 		if (i == m_optionsIndex)
 		{
-			m_options[i]->setFillColor(sf::Color::Yellow);
+			m_options[i].setFillColor(sf::Color::Yellow);
 		}
 		else
 		{
-			m_options[i]->setFillColor(sf::Color::White);
+			m_options[i].setFillColor(sf::Color::White);
 		}
 	}
 
@@ -78,7 +78,7 @@ void MainMenu::update(sf::Time t_deltaTime)
 	{
 		switch (m_optionsIndex) {
 		case PLAY:
-			// TODO: Create the play area state and start it
+			m_context->m_states->add(std::make_unique<GamePlay>(m_context));
 			break;
 		case EXIT:
 			m_context->m_window->close();
@@ -95,7 +95,7 @@ void MainMenu::present()
 	m_context->m_window->draw(m_gameTitle);
 	for (auto& option : m_options)
 	{
-		m_context->m_window->draw(*option.get());
+		m_context->m_window->draw(option);
 	}
 
 	m_context->m_window->display();

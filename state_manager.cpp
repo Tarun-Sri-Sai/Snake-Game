@@ -12,7 +12,7 @@ Engine::StateManager::~StateManager()
 	}
 }
 
-void Engine::StateManager::add(std::unique_ptr<State> t_state, bool t_replace = false)
+void Engine::StateManager::add(std::unique_ptr<State> t_state, bool t_replace)
 {
 	m_add = true;
 	m_newState = std::move(t_state);

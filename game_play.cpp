@@ -1,0 +1,67 @@
+#include "game_play.hpp"
+
+GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
+	m_context(t_context),
+	m_grass(m_context->m_assets->getTexture(GRASS)),
+	m_food(m_context->m_assets->getTexture(FOOD)),
+	m_walls{
+		sf::Sprite(m_context->m_assets->getTexture(WALL)),
+		sf::Sprite(m_context->m_assets->getTexture(WALL)),
+		sf::Sprite(m_context->m_assets->getTexture(WALL)),
+		sf::Sprite(m_context->m_assets->getTexture(WALL)) }
+{
+}
+
+GamePlay::~GamePlay()
+{
+}
+
+void GamePlay::setup()
+{
+	m_grass.setTextureRect(m_context->m_window->getViewport(m_context->m_window->getDefaultView()));
+
+	sf::Vector2u windowSize = m_context->m_window->getSize();
+	m_walls[0].setTextureRect({ { 0, 0 }, { (int)windowSize.x, 16 } });
+	m_walls[1].setTextureRect({ { 0, 0 }, { (int)windowSize.x, 16 } });
+	m_walls[1].setPosition({ 0.0f, (float)windowSize.y - 16.0f });
+
+	m_walls[2].setTextureRect({ { 0, 0 }, { 16, (int)windowSize.y } });
+	m_walls[3].setTextureRect({ { 0, 0 }, { 16, (int)windowSize.y } });
+	m_walls[3].setPosition({ (float)windowSize.x - 16.0f, 0.0f });
+}
+
+void GamePlay::listen()
+{
+	while (const std::optional event = m_context->m_window->pollEvent())
+	{
+		if (event->is<sf::Event::Closed>())
+		{
+			m_context->m_window->close();
+		}
+	}
+}
+
+void GamePlay::update(sf::Time t_deltaTime)
+{
+}
+
+void GamePlay::present()
+{
+	m_context->m_window->clear();
+	m_context->m_window->draw(m_grass);
+
+	for (auto& wall : m_walls)
+	{
+		m_context->m_window->draw(wall);
+	}
+
+	m_context->m_window->display();
+}
+
+void GamePlay::pause()
+{
+}
+
+void GamePlay::resume()
+{
+}

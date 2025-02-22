@@ -9,7 +9,11 @@
 enum GameAssets
 {
 	TITLE_FONT = 0,
-	MENU_FONT
+	MENU_FONT,
+	GRASS,
+	FOOD,
+	WALL,
+	SNAKE
 };
 
 struct GameContext

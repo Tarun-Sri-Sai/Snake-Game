@@ -10,7 +10,7 @@ Engine::AssetManager::~AssetManager()
 	m_fonts.clear();
 }
 
-void Engine::AssetManager::addTexture(int t_id, const std::string& t_filePath, bool t_repeated = false)
+void Engine::AssetManager::addTexture(int t_id, const std::string& t_filePath, bool t_repeated)
 {
 	auto texture{ std::make_unique<sf::Texture>() };
 
