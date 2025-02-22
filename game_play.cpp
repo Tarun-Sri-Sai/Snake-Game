@@ -1,5 +1,4 @@
 #include "game_play.hpp"
-#include <random>
 #include <iostream>
 
 GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
@@ -14,7 +13,8 @@ GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
 	},
 	m_snake(m_context->m_assets->getTexture(SNAKE)),
 	m_snakeDirection(RIGHT),
-	m_elapsedTime(sf::Time::Zero)
+	m_elapsedTime(sf::Time::Zero),
+	m_generator{ std::random_device{}() }
 {
 }
 
@@ -147,10 +147,8 @@ void GamePlay::resume()
 {
 }
 
-int GamePlay::getRandom(int min, int max) {
-	static std::random_device rd;
-	static std::mt19937 generator(rd());
-	std::uniform_int_distribution<int> distribution(min, max);
+int GamePlay::getRandom(int t_min, int t_max) {
+	std::uniform_int_distribution<int> distribution(t_min, t_max);
 
-	return distribution(generator);
+	return distribution(m_generator);
 }

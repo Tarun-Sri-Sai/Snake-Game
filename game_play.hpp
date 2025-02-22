@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <array>
 #include "snake.hpp"
+#include <random>
 
 enum SnakeDirections
 {
@@ -37,8 +38,10 @@ private:
 	Snake m_snake;
 	int m_snakeDirection;
 	sf::Time m_elapsedTime;
+	static std::random_device rd;
+	std::mt19937 m_generator;
 
-	int getRandom(int min, int max);
+	int getRandom(int t_min, int t_max);
 	sf::Vector2f getFoodPosition();
 	sf::Vector2f getSnakeDirection();
 };
