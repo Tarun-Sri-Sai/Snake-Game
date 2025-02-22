@@ -5,6 +5,9 @@
 #include "state_manager.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 enum GameAssets
 {
@@ -30,6 +33,8 @@ struct GameContext
     }
 };
 
+const fs::path ASSETS_DIR = fs::path("assets");
+
 class Game
 {
 public:
@@ -40,6 +45,8 @@ public:
 private:
     std::shared_ptr<GameContext> m_context;
     const sf::Time FRAME_TIME = sf::seconds(1.0f / 60.0f);
+
+    std::string getAssetFile(const std::string& t_fileName);
 };
 
 #endif  // !GAME_HPP

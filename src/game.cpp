@@ -8,15 +8,20 @@ Game::Game() : m_context(std::make_shared<GameContext>())
 {
     m_context->window->create(sf::VideoMode({ 960, 544 }), "Snake Game", sf::Style::Close);
 
-    m_context->assets->addFont(TITLE_FONT, "knight_warrior.otf");
-    m_context->assets->addFont(MENU_FONT, "supreme_spike.otf");
+    m_context->assets->addFont(TITLE_FONT, getAssetFile("knight_warrior.otf"));
+    m_context->assets->addFont(MENU_FONT, getAssetFile("supreme_spike.otf"));
 
-    m_context->assets->addTexture(GRASS, "grass.png", true);
-    m_context->assets->addTexture(WALL, "wall.png", true);
-    m_context->assets->addTexture(FOOD, "food.png");
-    m_context->assets->addTexture(SNAKE, "snake.png");
+    m_context->assets->addTexture(GRASS, getAssetFile("grass.png"), true);
+    m_context->assets->addTexture(WALL, getAssetFile("wall.png"), true);
+    m_context->assets->addTexture(FOOD, getAssetFile("food.png"));
+    m_context->assets->addTexture(SNAKE, getAssetFile("snake.png"));
 
     m_context->states->add(std::make_unique<MainMenu>(m_context));
+}
+
+std::string Game::getAssetFile(const std::string& t_fileName)
+{
+    return (ASSETS_DIR / fs::path(t_fileName)).string();
 }
 
 void Game::run()

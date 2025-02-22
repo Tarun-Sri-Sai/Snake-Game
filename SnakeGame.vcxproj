@@ -18,6 +18,38 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\asset_manager.hpp" />
+    <ClInclude Include="include\game.hpp" />
+    <ClInclude Include="include\game_over.hpp" />
+    <ClInclude Include="include\game_pause.hpp" />
+    <ClInclude Include="include\game_play.hpp" />
+    <ClInclude Include="include\main_menu.hpp" />
+    <ClInclude Include="include\snake.hpp" />
+    <ClInclude Include="include\state.hpp" />
+    <ClInclude Include="include\state_manager.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\food.png" />
+    <Image Include="assets\grass.png" />
+    <Image Include="assets\snake.png" />
+    <Image Include="assets\wall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\knight_warrior.otf" />
+    <Font Include="assets\supreme_spike.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\asset_manager.cpp" />
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\game_over.cpp" />
+    <ClCompile Include="src\game_pause.cpp" />
+    <ClCompile Include="src\game_play.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\main_menu.cpp" />
+    <ClCompile Include="src\snake.cpp" />
+    <ClCompile Include="src\state_manager.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -76,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\fmt-11.1.3\include;$(SolutionDir)Dependencies\SFML-3.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)Dependencies\SFML-3.0.0\include;$(SolutionDir)Dependencies\fmt-11.1.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/w44365 /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -95,7 +127,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\fmt-11.1.3\include;$(SolutionDir)Dependencies\SFML-3.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)Dependencies\SFML-3.0.0\include;$(SolutionDir)Dependencies\fmt-11.1.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/w44365 /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -118,7 +150,7 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\fmt-11.1.3\include;$(SolutionDir)Dependencies\SFML-3.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)Dependencies\SFML-3.0.0\include;$(SolutionDir)Dependencies\fmt-11.1.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -140,7 +172,7 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\fmt-11.1.3\include;$(SolutionDir)Dependencies\SFML-3.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)Dependencies\SFML-3.0.0\include;$(SolutionDir)Dependencies\fmt-11.1.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -152,38 +184,6 @@
       <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="asset_manager.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="game_over.cpp" />
-    <ClCompile Include="game_pause.cpp" />
-    <ClCompile Include="game_play.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="main_menu.cpp" />
-    <ClCompile Include="snake.cpp" />
-    <ClCompile Include="state_manager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="asset_manager.hpp" />
-    <ClInclude Include="game.hpp" />
-    <ClInclude Include="game_over.hpp" />
-    <ClInclude Include="game_pause.hpp" />
-    <ClInclude Include="game_play.hpp" />
-    <ClInclude Include="main_menu.hpp" />
-    <ClInclude Include="snake.hpp" />
-    <ClInclude Include="state.hpp" />
-    <ClInclude Include="state_manager.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="knight_warrior.otf" />
-    <Font Include="supreme_spike.otf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="food.png" />
-    <Image Include="grass.png" />
-    <Image Include="snake.png" />
-    <Image Include="wall.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
