@@ -11,39 +11,39 @@
 
 enum SnakeDirections
 {
-	UP = 0,
-	DOWN,
-	LEFT,
-	RIGHT
+    UP = 0,
+    DOWN,
+    LEFT,
+    RIGHT
 };
 
 class GamePlay : public Engine::State
 {
 public:
-	GamePlay(std::shared_ptr<GameContext>& t_context);
-	~GamePlay();
+    GamePlay(std::shared_ptr<GameContext>& t_context);
+    ~GamePlay();
 
-	void setup() override;
-	void listen() override;
-	void update(const sf::Time& t_deltaTime) override;
-	void present() override;
+    void setup() override;
+    void listen() override;
+    void update(const sf::Time& t_deltaTime) override;
+    void present() override;
 
-	void pause() override;
-	void resume() override;
+    void pause() override;
+    void resume() override;
 private:
-	std::shared_ptr<GameContext> m_context;
-	sf::Sprite m_grass;
-	sf::Sprite m_food;
-	std::array<sf::Sprite, 4> m_walls;
-	Snake m_snake;
-	int m_snakeDirection;
-	sf::Time m_elapsedTime;
-	static std::random_device rd;
-	std::mt19937 m_generator;
+    std::shared_ptr<GameContext> m_context;
+    sf::Sprite m_grass;
+    sf::Sprite m_food;
+    std::array<sf::Sprite, 4> m_walls;
+    Snake m_snake;
+    int m_snakeDirection;
+    sf::Time m_elapsedTime;
+    static std::random_device rd;
+    std::mt19937 m_generator;
 
-	int getRandom(int t_min, int t_max);
-	sf::Vector2f getFoodPosition();
-	sf::Vector2f getSnakeDirection();
+    int getRandom(int t_min, int t_max);
+    sf::Vector2f getFoodPosition();
+    sf::Vector2f getSnakeDirection();
 };
 
 #endif  // !GAME_PLAY_HPP

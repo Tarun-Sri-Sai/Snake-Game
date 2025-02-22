@@ -7,23 +7,23 @@
 
 namespace Engine
 {
-	class StateManager
-	{
-	public:
-		StateManager();
-		~StateManager();
+    class StateManager
+    {
+    public:
+        StateManager();
+        ~StateManager();
 
-		void add(std::unique_ptr<State> t_state, bool t_replace = false);
-		void remove();
-		void update();
-		std::unique_ptr<State>& get();
-	private:
-		std::stack<std::unique_ptr<State>> m_states;
-		std::unique_ptr<State> m_newState;
-		bool m_add;
-		bool m_replace;
-		bool m_remove;
-	};
+        void add(std::unique_ptr<State> t_state, bool t_replace = false);
+        void remove();
+        void update();
+        std::unique_ptr<State>& get();
+    private:
+        std::stack<std::unique_ptr<State>> m_states;
+        std::unique_ptr<State> m_newState;
+        bool m_add;
+        bool m_replace;
+        bool m_remove;
+    };
 }
 
 #endif  // !STATE_MANAGER_HPP

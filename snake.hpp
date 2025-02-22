@@ -10,18 +10,18 @@
 class Snake : public sf::Drawable
 {
 public:
-	Snake(const sf::Texture& t_texture);
-	~Snake();
+    Snake(const sf::Texture& t_texture);
+    ~Snake();
 
-	void setup();
-	void move(const sf::Vector2f& t_direction);
-	bool isOn(const sf::Sprite& t_other) const;
-	void grow(const sf::Vector2f& t_direction);
-	void draw(sf::RenderTarget& t_target, sf::RenderStates t_states) const override;
+    void setup();
+    void move(const sf::Vector2f& t_direction);
+    bool isOn(const sf::Sprite& t_other) const;
+    void grow(const sf::Vector2f& t_direction);
+    void draw(sf::RenderTarget& t_target, sf::RenderStates t_states) const override;
 private:
-	std::list<sf::Sprite> m_body;
-	std::list<sf::Sprite>::iterator m_head;
-	std::list<sf::Sprite>::iterator m_tail;
+    std::list<sf::Sprite> m_body;
+    std::list<sf::Sprite>::iterator m_head;
+    std::list<sf::Sprite>::iterator m_tail;
 };
 
-#endif	// !SNAKE_HPP
+#endif    // !SNAKE_HPP

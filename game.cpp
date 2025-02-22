@@ -14,42 +14,42 @@ Game::~Game()
 
 void Game::setup()
 {
-	m_context->m_window->create(sf::VideoMode({ 960, 540 }), "Snake Game", sf::Style::Close);
+    m_context->m_window->create(sf::VideoMode({ 960, 540 }), "Snake Game", sf::Style::Close);
 
-	m_context->m_assets->addFont(TITLE_FONT, "knight_warrior.otf");
-	m_context->m_assets->addFont(MENU_FONT, "supreme_spike.otf");
+    m_context->m_assets->addFont(TITLE_FONT, "knight_warrior.otf");
+    m_context->m_assets->addFont(MENU_FONT, "supreme_spike.otf");
 
-	m_context->m_assets->addTexture(GRASS, "grass.png", true);
-	m_context->m_assets->addTexture(WALL, "wall.png", true);
-	m_context->m_assets->addTexture(FOOD, "food.png");
-	m_context->m_assets->addTexture(SNAKE, "snake.png");
+    m_context->m_assets->addTexture(GRASS, "grass.png", true);
+    m_context->m_assets->addTexture(WALL, "wall.png", true);
+    m_context->m_assets->addTexture(FOOD, "food.png");
+    m_context->m_assets->addTexture(SNAKE, "snake.png");
 
-	m_context->m_states->add(std::make_unique<MainMenu>(m_context));
+    m_context->m_states->add(std::make_unique<MainMenu>(m_context));
 }
 
 void Game::run()
 {
-	sf::Clock clock;
-	sf::Time timeSinceLastFrame{ sf::Time::Zero };
+    sf::Clock clock;
+    sf::Time timeSinceLastFrame{ sf::Time::Zero };
 
-	while (m_context->m_window->isOpen())
-	{
-		timeSinceLastFrame += clock.restart();
+    while (m_context->m_window->isOpen())
+    {
+        timeSinceLastFrame += clock.restart();
 
-		if (timeSinceLastFrame < FRAME_TIME)
-		{
-			std::this_thread::sleep_for(5ms);
-			continue;
-		}
+        if (timeSinceLastFrame < FRAME_TIME)
+        {
+            std::this_thread::sleep_for(5ms);
+            continue;
+        }
 
-		while (timeSinceLastFrame >= FRAME_TIME)
-		{
-			timeSinceLastFrame -= FRAME_TIME;
+        while (timeSinceLastFrame >= FRAME_TIME)
+        {
+            timeSinceLastFrame -= FRAME_TIME;
 
-			m_context->m_states->update();
-			m_context->m_states->get()->listen();
-			m_context->m_states->get()->update(FRAME_TIME);
-			m_context->m_states->get()->present();
-		}
-	}
+            m_context->m_states->update();
+            m_context->m_states->get()->listen();
+            m_context->m_states->get()->update(FRAME_TIME);
+            m_context->m_states->get()->present();
+        }
+    }
 }
