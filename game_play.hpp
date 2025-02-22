@@ -42,8 +42,9 @@ private:
     std::mt19937 m_generator;
 
     int getRandom(int t_min, int t_max);
-    sf::Vector2f getFoodPosition();
+    void setFoodPosition();
     sf::Vector2f getSnakeDirection();
+    bool isSnakeOnWall();
 };
 
 #endif  // !GAME_PLAY_HPP

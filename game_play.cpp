@@ -34,6 +34,8 @@ sf::Vector2f GamePlay::getSnakeDirection()
         return { -16.0f, 0.0f };
     case RIGHT:
         return { 16.0f, 0.0f };
+    default:
+        return { 0.0f, 0.0f };
     }
 }
 
@@ -57,17 +59,27 @@ void GamePlay::setup()
     m_walls[3].setPosition({ (float)windowSize.x, 16.0f });
     m_walls[3].setRotation(sf::degrees(90));
 
-    m_food.setPosition(getFoodPosition());
+    setFoodPosition();
 
     m_snake.setup();
 }
 
-sf::Vector2f GamePlay::getFoodPosition()
+void GamePlay::setFoodPosition()
 {
-    return {
+    sf::Vector2f result = {
         (float)getRandom(1, (960 - 32) / 16) * 16,
         (float)getRandom(1, (540 - 32) / 16) * 16
     };
+    m_food.setPosition(result);
+
+    while (m_snake.isOn(m_food))
+    {
+        result = {
+            (float)getRandom(1, (960 - 32) / 16) * 16,
+            (float)getRandom(1, (540 - 32) / 16) * 16
+        };
+        m_food.setPosition(result);
+    }
 }
 
 void GamePlay::listen()
@@ -114,12 +126,41 @@ void GamePlay::listen()
 void GamePlay::update(const sf::Time& t_deltaTime)
 {
     m_elapsedTime += t_deltaTime;
+    if (m_elapsedTime.asSeconds() < Engine::TICK_TIME)
+    {
+        return;
+    }
 
-    if (m_elapsedTime.asSeconds() > 0.1f)
+    if (isSnakeOnWall() || m_snake.isDead())
+    {
+        // TODO: Go to GameOver state
+        m_context->m_window->close();
+        return;
+    }
+
+    if (m_snake.isHeadOn(m_food))
+    {
+        m_snake.grow(getSnakeDirection());
+        setFoodPosition();
+    }
+    else
     {
         m_snake.move(getSnakeDirection());
-        m_elapsedTime -= sf::seconds(0.1f);
     }
+
+    m_elapsedTime -= sf::seconds(Engine::TICK_TIME);
+}
+
+bool GamePlay::isSnakeOnWall()
+{
+    for (auto& wall : m_walls)
+    {
+        if (m_snake.isHeadOn(wall))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 void GamePlay::present()

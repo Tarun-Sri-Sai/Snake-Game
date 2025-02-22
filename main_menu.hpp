@@ -29,6 +29,7 @@ private:
     std::array<sf::Text, 2> m_options;
     int m_optionsIndex;
     bool m_optionSelected;
+    sf::Time m_elapsedTime;
 };
 
 #endif  // !MAIN_MENU_HPP

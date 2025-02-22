@@ -5,6 +5,8 @@
 
 namespace Engine
 {
+    const float TICK_TIME = 0.12f;
+
     class State
     {
     public:
