@@ -25,8 +25,10 @@ private:
 	sf::Sprite m_grass;
 	sf::Sprite m_food;
 	std::array<sf::Sprite, 4> m_walls;
-
 	// TODO: Add snake
+
+	int getRandom(int min, int max);
+	sf::Vector2<float> getFoodPosition();
 };
 
 #endif  // !GAME_PLAY_HPP

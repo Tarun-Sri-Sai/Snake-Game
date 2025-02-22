@@ -72,5 +72,8 @@
     <Image Include="food.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="wall_90.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

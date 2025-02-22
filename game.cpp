@@ -21,6 +21,7 @@ void Game::setup()
 
 	m_context->m_assets->addTexture(GRASS, "grass.png", true);
 	m_context->m_assets->addTexture(WALL, "wall.png", true);
+	m_context->m_assets->addTexture(WALL_90, "wall_90.png", true);
 	m_context->m_assets->addTexture(FOOD, "food.png");
 
 	m_context->m_states->add(std::make_unique<MainMenu>(m_context));
