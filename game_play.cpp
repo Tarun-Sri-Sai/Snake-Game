@@ -1,20 +1,22 @@
 #include "game_play.hpp"
 #include <iostream>
+#include "game_over.hpp"
 
 GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
     m_context(t_context),
-    m_grass(m_context->m_assets->getTexture(GRASS)),
-    m_food(m_context->m_assets->getTexture(FOOD)),
+    m_grass(m_context->assets->getTexture(GRASS)),
+    m_food(m_context->assets->getTexture(FOOD)),
     m_walls{
-        sf::Sprite(m_context->m_assets->getTexture(WALL)),
-        sf::Sprite(m_context->m_assets->getTexture(WALL)),
-        sf::Sprite(m_context->m_assets->getTexture(WALL)),
-        sf::Sprite(m_context->m_assets->getTexture(WALL))
+        sf::Sprite(m_context->assets->getTexture(WALL)),
+        sf::Sprite(m_context->assets->getTexture(WALL)),
+        sf::Sprite(m_context->assets->getTexture(WALL)),
+        sf::Sprite(m_context->assets->getTexture(WALL))
     },
-    m_snake(m_context->m_assets->getTexture(SNAKE)),
+    m_snake(m_context->assets->getTexture(SNAKE)),
     m_snakeDirection(RIGHT),
     m_elapsedTime(sf::Time::Zero),
-    m_generator{ std::random_device{}() }
+    m_generator{ std::random_device{}() },
+    m_score(0)
 {
 }
 
@@ -41,9 +43,9 @@ sf::Vector2f GamePlay::getSnakeDirection()
 
 void GamePlay::setup()
 {
-    m_grass.setTextureRect(m_context->m_window->getViewport(m_context->m_window->getDefaultView()));
+    m_grass.setTextureRect(m_context->window->getViewport(m_context->window->getDefaultView()));
 
-    sf::Vector2u windowSize = m_context->m_window->getSize();
+    sf::Vector2u windowSize = m_context->window->getSize();
 
     m_walls[0].setTextureRect({ { 0, 0 }, { (int)windowSize.x, 16 } });
     m_walls[0].setPosition({ 0.0f, 0.0f });
@@ -84,11 +86,11 @@ void GamePlay::setFoodPosition()
 
 void GamePlay::listen()
 {
-    while (const std::optional event = m_context->m_window->pollEvent())
+    while (const std::optional event = m_context->window->pollEvent())
     {
         if (event->is<sf::Event::Closed>())
         {
-            m_context->m_window->close();
+            m_context->window->close();
         }
         else if (auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
         {
@@ -131,15 +133,15 @@ void GamePlay::update(const sf::Time& t_deltaTime)
         return;
     }
 
-    if (isSnakeOnWall() || m_snake.isDead())
+    if (isSnakeOnWall() || m_snake.isDead() || m_score > 1392)
     {
-        // TODO: Go to GameOver state
-        m_context->m_window->close();
+        m_context->states->add(std::make_unique<GameOver>(m_context, m_score));
         return;
     }
 
     if (m_snake.isHeadOn(m_food))
     {
+        m_score++;
         m_snake.grow(getSnakeDirection());
         setFoodPosition();
     }
@@ -165,19 +167,19 @@ bool GamePlay::isSnakeOnWall()
 
 void GamePlay::present()
 {
-    m_context->m_window->clear();
+    m_context->window->clear();
 
-    m_context->m_window->draw(m_grass);
+    m_context->window->draw(m_grass);
 
     for (auto& wall : m_walls)
     {
-        m_context->m_window->draw(wall);
+        m_context->window->draw(wall);
     }
 
-    m_context->m_window->draw(m_food);
-    m_context->m_window->draw(m_snake);
+    m_context->window->draw(m_food);
+    m_context->window->draw(m_snake);
 
-    m_context->m_window->display();
+    m_context->window->display();
 }
 
 void GamePlay::pause()

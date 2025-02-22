@@ -40,6 +40,7 @@ private:
     sf::Time m_elapsedTime;
     static std::random_device rd;
     std::mt19937 m_generator;
+    int m_score;
 
     int getRandom(int t_min, int t_max);
     void setFoodPosition();

@@ -36,6 +36,9 @@
     <ClCompile Include="snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_over.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="state.hpp">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="snake.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_over.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
