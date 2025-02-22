@@ -19,6 +19,9 @@ private:
     std::shared_ptr<GameContext> m_context;
     sf::Text m_titleText;
     sf::Text m_scoreText;
+    sf::Text m_retryButton;
+    bool m_retryButtonSelected;
+    sf::Time m_elapsedTime;
 };
 
 #endif  // !GAME_OVER_HPP

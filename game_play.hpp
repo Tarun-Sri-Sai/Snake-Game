@@ -27,9 +27,6 @@ public:
     void listen() override;
     void update(const sf::Time& t_deltaTime) override;
     void present() override;
-
-    void pause() override;
-    void resume() override;
 private:
     std::shared_ptr<GameContext> m_context;
     sf::Sprite m_grass;

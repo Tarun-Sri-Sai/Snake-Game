@@ -156,6 +156,7 @@
     <ClCompile Include="asset_manager.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_over.cpp" />
+    <ClCompile Include="game_pause.cpp" />
     <ClCompile Include="game_play.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_menu.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="asset_manager.hpp" />
     <ClInclude Include="game.hpp" />
     <ClInclude Include="game_over.hpp" />
+    <ClInclude Include="game_pause.hpp" />
     <ClInclude Include="game_play.hpp" />
     <ClInclude Include="main_menu.hpp" />
     <ClInclude Include="snake.hpp" />

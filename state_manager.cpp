@@ -29,12 +29,6 @@ void Engine::StateManager::update()
     if (m_remove && !m_states.empty())
     {
         m_states.pop();
-
-        if (!m_states.empty())
-        {
-            m_states.top()->resume();
-        }
-
         m_remove = false;
     }
 
@@ -45,14 +39,8 @@ void Engine::StateManager::update()
             m_states.pop();
         }
 
-        if (!m_states.empty())
-        {
-            m_states.top()->pause();
-        }
-
         m_states.push(std::move(m_newState));
         m_states.top()->setup();
-        m_states.top()->resume();
         m_add = false;
     }
 }

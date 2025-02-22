@@ -1,29 +1,40 @@
-#include "main_menu.hpp"
-#include "game_play.hpp"
+#include "game_pause.hpp"
 
-MainMenu::MainMenu(std::shared_ptr<GameContext>& t_context) :
+#define FMT_HEADER_ONLY
+#include <fmt/format.h>
+
+GamePause::GamePause(std::shared_ptr<GameContext>& t_context, int t_score) :
     m_context(t_context),
-    m_gameTitle(t_context->assets->getFont(TITLE_FONT), "Snake Game", 60),
-    m_playButton(sf::Text(m_context->assets->getFont(MENU_FONT), "Press [Enter] to play")),
+    m_titleText(t_context->assets->getFont(TITLE_FONT),
+        "Paused", 60),
+    m_scoreText(t_context->assets->getFont(MENU_FONT),
+        fmt::format("Score: {}", t_score)),
+    m_playButton(t_context->assets->getFont(MENU_FONT),
+        "Press [Escape] to resume"),
     m_playButtonSelected(false),
     m_elapsedTime(sf::Time::Zero)
 {
 }
 
-void MainMenu::setup()
+void GamePause::setup()
 {
-    m_gameTitle.setOrigin(m_gameTitle.getLocalBounds().getCenter());
-    m_gameTitle.setPosition({
+    m_titleText.setOrigin(m_titleText.getLocalBounds().getCenter());
+    m_titleText.setPosition({
         m_context->window->getSize().x / 2.0f,
         m_context->window->getSize().y / 2.0f - 150.0f });
+
+    m_scoreText.setOrigin(m_scoreText.getLocalBounds().getCenter());
+    m_scoreText.setPosition({
+        m_context->window->getSize().x / 2.0f,
+        m_context->window->getSize().y / 2.0f });
 
     m_playButton.setOrigin(m_playButton.getLocalBounds().getCenter());
     m_playButton.setPosition({
         m_context->window->getSize().x / 2.0f,
-        m_context->window->getSize().y / 2.0f });
+        m_context->window->getSize().y / 2.0f + 60.0f });
 }
 
-void MainMenu::listen()
+void GamePause::listen()
 {
     while (const std::optional event = m_context->window->pollEvent())
     {
@@ -35,18 +46,15 @@ void MainMenu::listen()
         {
             switch (keyPressed->code)
             {
-            case sf::Keyboard::Key::Enter:
-                m_playButtonSelected = true;
-                break;
             case sf::Keyboard::Key::Escape:
-                m_context->window->close();
+                m_playButtonSelected = true;
                 break;
             }
         }
     }
 }
 
-void MainMenu::update(const sf::Time& t_deltaTime)
+void GamePause::update(const sf::Time& t_deltaTime)
 {
     m_elapsedTime += t_deltaTime;
     if (m_elapsedTime.asSeconds() < Engine::TICK_TIME)
@@ -56,18 +64,19 @@ void MainMenu::update(const sf::Time& t_deltaTime)
 
     if (m_playButtonSelected)
     {
-        m_context->states->add(std::make_unique<GamePlay>(m_context));
+        m_context->states->remove();
         m_playButtonSelected = false;
     }
 
     m_elapsedTime -= sf::seconds(Engine::TICK_TIME);
 }
 
-void MainMenu::present()
+void GamePause::present()
 {
     m_context->window->clear();
 
-    m_context->window->draw(m_gameTitle);
+    m_context->window->draw(m_titleText);
+    m_context->window->draw(m_scoreText);
     m_context->window->draw(m_playButton);
 
     m_context->window->display();

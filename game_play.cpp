@@ -1,6 +1,7 @@
 #include "game_play.hpp"
 #include <iostream>
 #include "game_over.hpp"
+#include "game_pause.hpp"
 
 GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
     m_context(t_context),
@@ -120,6 +121,9 @@ void GamePlay::listen()
                     m_snakeDirection = RIGHT;
                 }
                 break;
+            case sf::Keyboard::Key::Escape:
+                m_context->states->add(std::make_unique<GamePause>(m_context, m_score), false);
+                break;
             }
         }
     }
@@ -180,14 +184,6 @@ void GamePlay::present()
     m_context->window->draw(m_snake);
 
     m_context->window->display();
-}
-
-void GamePlay::pause()
-{
-}
-
-void GamePlay::resume()
-{
 }
 
 int GamePlay::getRandom(int t_min, int t_max) {
