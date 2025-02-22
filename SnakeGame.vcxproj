@@ -147,7 +147,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="asset_manager.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="state_manager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="asset_manager.hpp" />
+    <ClInclude Include="game.hpp" />
+    <ClInclude Include="state.hpp" />
+    <ClInclude Include="state_manager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
