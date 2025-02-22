@@ -40,7 +40,6 @@ void Engine::StateManager::update()
         }
 
         m_states.push(std::move(m_newState));
-        m_states.top()->setup();
         m_add = false;
     }
 }

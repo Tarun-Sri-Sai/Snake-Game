@@ -9,7 +9,7 @@ namespace Engine
     class AssetManager
     {
     public:
-        AssetManager();
+        AssetManager() = default;
         ~AssetManager();
 
         void addTexture(int t_id, const std::string& t_filePath, bool t_repeated = false);

@@ -11,7 +11,6 @@ public:
     GameOver(std::shared_ptr<GameContext>& t_context, int t_score);
     ~GameOver() = default;
 
-    void setup() override;
     void listen() override;
     void update(const sf::Time& t_deltaTime) override;
     void present() override;

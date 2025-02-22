@@ -21,9 +21,8 @@ class GamePlay : public Engine::State
 {
 public:
     GamePlay(std::shared_ptr<GameContext>& t_context);
-    ~GamePlay();
+    ~GamePlay() = default;
 
-    void setup() override;
     void listen() override;
     void update(const sf::Time& t_deltaTime) override;
     void present() override;

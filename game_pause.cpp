@@ -14,10 +14,6 @@ GamePause::GamePause(std::shared_ptr<GameContext>& t_context, int t_score) :
     m_playButtonSelected(false),
     m_elapsedTime(sf::Time::Zero)
 {
-}
-
-void GamePause::setup()
-{
     m_titleText.setOrigin(m_titleText.getLocalBounds().getCenter());
     m_titleText.setPosition({
         m_context->window->getSize().x / 2.0f,

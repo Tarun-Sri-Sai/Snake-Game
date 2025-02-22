@@ -10,7 +10,6 @@ public:
     GamePause(std::shared_ptr<GameContext>& t_context, int t_score);
     ~GamePause() = default;
 
-    void setup() override;
     void listen() override;
     void update(const sf::Time& t_deltaTime) override;
     void present() override;

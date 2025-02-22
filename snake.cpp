@@ -5,20 +5,18 @@ Snake::Snake(const sf::Texture& t_texture) :
 {
     m_head = --m_body.end();
     m_tail = m_body.begin();
-}
-
-Snake::~Snake()
-{
-}
-
-void Snake::setup()
-{
+    
     float x = 16.0f;
     for (auto& piece : m_body)
     {
         piece.setPosition({ x, 16.0f });
         x += 16.0f;
     }
+}
+
+Snake::~Snake()
+{
+    m_body.clear();
 }
 
 void Snake::move(const sf::Vector2f& t_direction)

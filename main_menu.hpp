@@ -13,7 +13,6 @@ public:
     MainMenu(std::shared_ptr<GameContext>& t_context);
     ~MainMenu() = default;
 
-    void setup() override;
     void listen() override;
     void update(const sf::Time& t_deltaTime) override;
     void present() override;

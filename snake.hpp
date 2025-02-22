@@ -13,7 +13,6 @@ public:
     Snake(const sf::Texture& t_texture);
     ~Snake();
 
-    void setup();
     void move(const sf::Vector2f& t_direction);
     bool isOn(const sf::Sprite& t_other) const;
     bool isHeadOn(const sf::Sprite& t_other) const;

@@ -8,10 +8,6 @@ MainMenu::MainMenu(std::shared_ptr<GameContext>& t_context) :
     m_playButtonSelected(false),
     m_elapsedTime(sf::Time::Zero)
 {
-}
-
-void MainMenu::setup()
-{
     m_gameTitle.setOrigin(m_gameTitle.getLocalBounds().getCenter());
     m_gameTitle.setPosition({
         m_context->window->getSize().x / 2.0f,

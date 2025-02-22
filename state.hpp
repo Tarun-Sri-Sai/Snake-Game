@@ -13,7 +13,6 @@ namespace Engine
         State() {};
         virtual ~State() {};
 
-        virtual void setup() = 0;
         virtual void listen() = 0;
         virtual void update(const sf::Time& t_deltaTime) = 0;
         virtual void present() = 0;

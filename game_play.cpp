@@ -19,31 +19,6 @@ GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
     m_generator{ std::random_device{}() },
     m_score(0)
 {
-}
-
-GamePlay::~GamePlay()
-{
-}
-
-sf::Vector2f GamePlay::getSnakeDirection()
-{
-    switch (m_snakeDirection)
-    {
-    case UP:
-        return { 0.f, -16.0f };
-    case DOWN:
-        return { 0.f, 16.0f };
-    case LEFT:
-        return { -16.0f, 0.0f };
-    case RIGHT:
-        return { 16.0f, 0.0f };
-    default:
-        return { 0.0f, 0.0f };
-    }
-}
-
-void GamePlay::setup()
-{
     m_grass.setTextureRect(m_context->window->getViewport(m_context->window->getDefaultView()));
 
     sf::Vector2u windowSize = m_context->window->getSize();
@@ -63,8 +38,23 @@ void GamePlay::setup()
     m_walls[3].setRotation(sf::degrees(90));
 
     setFoodPosition();
+}
 
-    m_snake.setup();
+sf::Vector2f GamePlay::getSnakeDirection()
+{
+    switch (m_snakeDirection)
+    {
+    case UP:
+        return { 0.f, -16.0f };
+    case DOWN:
+        return { 0.f, 16.0f };
+    case LEFT:
+        return { -16.0f, 0.0f };
+    case RIGHT:
+        return { 16.0f, 0.0f };
+    default:
+        return { 0.0f, 0.0f };
+    }
 }
 
 void GamePlay::setFoodPosition()

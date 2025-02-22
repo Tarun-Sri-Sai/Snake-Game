@@ -6,14 +6,6 @@ using namespace std::chrono_literals;
 
 Game::Game() : m_context(std::make_shared<GameContext>())
 {
-}
-
-Game::~Game()
-{
-}
-
-void Game::setup()
-{
     m_context->window->create(sf::VideoMode({ 960, 544 }), "Snake Game", sf::Style::Close);
 
     m_context->assets->addFont(TITLE_FONT, "knight_warrior.otf");

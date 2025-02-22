@@ -1,9 +1,5 @@
 #include "asset_manager.hpp"
 
-Engine::AssetManager::AssetManager()
-{
-}
-
 Engine::AssetManager::~AssetManager()
 {
     m_textures.clear();

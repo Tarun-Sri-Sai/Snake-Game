@@ -34,9 +34,8 @@ class Game
 {
 public:
     Game();
-    ~Game();
+    ~Game() = default;
 
-    void setup();
     void run();
 private:
     std::shared_ptr<GameContext> m_context;

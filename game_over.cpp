@@ -15,10 +15,6 @@ GameOver::GameOver(std::shared_ptr<GameContext>& t_context, int t_score) :
     m_retryButtonSelected(false),
     m_elapsedTime(sf::Time::Zero)
 {
-}
-
-void GameOver::setup()
-{
     m_titleText.setOrigin(m_titleText.getLocalBounds().getCenter());
     m_titleText.setPosition({
         m_context->window->getSize().x / 2.0f,
