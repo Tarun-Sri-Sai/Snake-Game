@@ -156,6 +156,7 @@
     <ClCompile Include="game_play.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_menu.cpp" />
+    <ClCompile Include="snake.cpp" />
     <ClCompile Include="state_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="game.hpp" />
     <ClInclude Include="game_play.hpp" />
     <ClInclude Include="main_menu.hpp" />
+    <ClInclude Include="snake.hpp" />
     <ClInclude Include="state.hpp" />
     <ClInclude Include="state_manager.hpp" />
   </ItemGroup>
@@ -173,6 +175,7 @@
   <ItemGroup>
     <Image Include="food.png" />
     <Image Include="grass.png" />
+    <Image Include="snake.png" />
     <Image Include="wall.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

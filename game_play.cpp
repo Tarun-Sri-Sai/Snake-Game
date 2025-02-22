@@ -10,12 +10,31 @@ GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
 		sf::Sprite(m_context->m_assets->getTexture(WALL)),
 		sf::Sprite(m_context->m_assets->getTexture(WALL)),
 		sf::Sprite(m_context->m_assets->getTexture(WALL)),
-		sf::Sprite(m_context->m_assets->getTexture(WALL)) }
+		sf::Sprite(m_context->m_assets->getTexture(WALL))
+	},
+	m_snake(m_context->m_assets->getTexture(SNAKE)),
+	m_snakeDirection(RIGHT),
+	m_elapsedTime(sf::Time::Zero)
 {
 }
 
 GamePlay::~GamePlay()
 {
+}
+
+sf::Vector2f GamePlay::getSnakeDirection()
+{
+	switch (m_snakeDirection)
+	{
+	case UP:
+		return { 0.f, -16.0f };
+	case DOWN:
+		return { 0.f, 16.0f };
+	case LEFT:
+		return { -16.0f, 0.0f };
+	case RIGHT:
+		return { 16.0f, 0.0f };
+	}
 }
 
 void GamePlay::setup()
@@ -39,13 +58,16 @@ void GamePlay::setup()
 	m_walls[3].setRotation(sf::degrees(90));
 
 	m_food.setPosition(getFoodPosition());
+
+	m_snake.setup();
 }
 
-sf::Vector2<float> GamePlay::getFoodPosition()
+sf::Vector2f GamePlay::getFoodPosition()
 {
 	return {
 		(float)getRandom(1, (960 - 32) / 16) * 16,
-		(float)getRandom(1, (540 - 32) / 16) * 16 };
+		(float)getRandom(1, (540 - 32) / 16) * 16
+	};
 }
 
 void GamePlay::listen()
@@ -56,11 +78,48 @@ void GamePlay::listen()
 		{
 			m_context->m_window->close();
 		}
+		else if (auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+		{
+			switch (keyPressed->code)
+			{
+			case sf::Keyboard::Key::Up:
+				if (m_snakeDirection != DOWN)
+				{
+					m_snakeDirection = UP;
+				}
+				break;
+			case sf::Keyboard::Key::Down:
+				if (m_snakeDirection != UP)
+				{
+					m_snakeDirection = DOWN;
+				}
+				break;
+			case sf::Keyboard::Key::Left:
+				if (m_snakeDirection != RIGHT)
+				{
+					m_snakeDirection = LEFT;
+				}
+				break;
+			case sf::Keyboard::Key::Right:
+				if (m_snakeDirection != LEFT)
+				{
+					m_snakeDirection = RIGHT;
+				}
+				break;
+			}
+		}
 	}
 }
 
-void GamePlay::update(sf::Time t_deltaTime)
+void GamePlay::update(const sf::Time& t_deltaTime)
 {
+	m_elapsedTime += t_deltaTime;
+
+	if (m_elapsedTime.asSeconds() > 0.1f)
+	{
+		m_snake.move(getSnakeDirection());
+		m_elapsedTime -= sf::seconds(0.1f);
+	}
 }
 
 void GamePlay::present()
@@ -68,11 +127,14 @@ void GamePlay::present()
 	m_context->m_window->clear();
 
 	m_context->m_window->draw(m_grass);
+
 	for (auto& wall : m_walls)
 	{
 		m_context->m_window->draw(wall);
 	}
+
 	m_context->m_window->draw(m_food);
+	m_context->m_window->draw(m_snake);
 
 	m_context->m_window->display();
 }

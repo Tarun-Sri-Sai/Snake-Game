@@ -33,6 +33,9 @@
     <ClCompile Include="game_play.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="state.hpp">
@@ -53,6 +56,9 @@
     <ClInclude Include="game_play.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="snake.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="knight_warrior.otf">
@@ -70,6 +76,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="food.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="snake.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
