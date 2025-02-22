@@ -6,6 +6,12 @@
 #include <memory>
 #include <SFML/Graphics/Text.hpp>
 
+enum Options
+{
+	PLAY = 0, 
+	EXIT
+};
+
 class MainMenu : public Engine::State
 {
 public:
@@ -20,6 +26,8 @@ private:
 	std::shared_ptr<GameContext> m_context;
 	sf::Text m_gameTitle;
 	std::vector<std::unique_ptr<sf::Text>> m_options;
+	int m_optionsIndex;
+	bool m_optionSelected;
 };
 
 #endif  // !MAIN_MENU_HPP
