@@ -13,7 +13,7 @@ namespace Engine
 
 		virtual void setup() = 0;
 		virtual void listen() = 0;
-		virtual void update(sf::Time t_deltaTime) = 0;
+		virtual void update(const sf::Time& t_deltaTime) = 0;
 		virtual void present() = 0;
 
 		virtual void pause() {};

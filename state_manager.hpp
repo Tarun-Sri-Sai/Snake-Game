@@ -15,7 +15,7 @@ namespace Engine
 
 		void add(std::unique_ptr<State> t_state, bool t_replace = false);
 		void remove();
-		void process();
+		void update();
 		std::unique_ptr<State>& get();
 	private:
 		std::stack<std::unique_ptr<State>> m_states;

@@ -8,7 +8,8 @@ MainMenu::MainMenu(std::shared_ptr<GameContext>& t_context) :
 	m_optionSelected(false),
 	m_options{
 		sf::Text(m_context->m_assets->getFont(MENU_FONT), "Play"),
-		sf::Text(m_context->m_assets->getFont(MENU_FONT), "Exit") }
+		sf::Text(m_context->m_assets->getFont(MENU_FONT), "Exit")
+	}
 {
 }
 
@@ -60,17 +61,21 @@ void MainMenu::listen()
 	}
 }
 
-void MainMenu::update(sf::Time t_deltaTime)
+void MainMenu::update(const sf::Time& t_deltaTime)
 {
 	for (size_t optionsLength = m_options.size(), i = 0; i < optionsLength; i++)
 	{
 		if (i == m_optionsIndex)
 		{
 			m_options[i].setFillColor(sf::Color::Yellow);
+			m_options[i].setOutlineColor(sf::Color(255, 255, 255, 255));
+			m_options[i].setOutlineThickness(0.5f);
 		}
 		else
 		{
 			m_options[i].setFillColor(sf::Color::White);
+			m_options[i].setOutlineColor(sf::Color(0, 0, 0, 0));
+			m_options[i].setOutlineThickness(0);
 		}
 	}
 

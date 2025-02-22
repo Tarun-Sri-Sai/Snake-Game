@@ -24,7 +24,7 @@ void Engine::StateManager::remove()
 	m_remove = true;
 }
 
-void Engine::StateManager::process()
+void Engine::StateManager::update()
 {
 	if (m_remove && !m_states.empty())
 	{

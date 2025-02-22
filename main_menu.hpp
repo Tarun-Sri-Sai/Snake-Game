@@ -21,7 +21,7 @@ public:
 
 	void setup() override;
 	void listen() override;
-	void update(sf::Time t_deltaTime) override;
+	void update(const sf::Time& t_deltaTime) override;
 	void present() override;
 private:
 	std::shared_ptr<GameContext> m_context;

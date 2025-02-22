@@ -45,7 +45,7 @@ void Game::run()
 		{
 			timeSinceLastFrame -= FRAME_TIME;
 
-			m_context->m_states->process();
+			m_context->m_states->update();
 			m_context->m_states->get()->listen();
 			m_context->m_states->get()->update(FRAME_TIME);
 			m_context->m_states->get()->present();
