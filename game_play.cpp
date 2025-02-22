@@ -9,8 +9,8 @@ GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
 	m_walls{
 		sf::Sprite(m_context->m_assets->getTexture(WALL)),
 		sf::Sprite(m_context->m_assets->getTexture(WALL)),
-		sf::Sprite(m_context->m_assets->getTexture(WALL_90)),
-		sf::Sprite(m_context->m_assets->getTexture(WALL_90)) }
+		sf::Sprite(m_context->m_assets->getTexture(WALL)),
+		sf::Sprite(m_context->m_assets->getTexture(WALL)) }
 {
 }
 
@@ -30,11 +30,13 @@ void GamePlay::setup()
 	m_walls[1].setTextureRect({ { 0, 0 }, { (int)windowSize.x, 16 } });
 	m_walls[1].setPosition({ 0.0f, (float)windowSize.y - 16.0f });
 
-	m_walls[2].setTextureRect({ { 0, 0 }, { 16, (int)windowSize.y - 32 } });
-	m_walls[2].setPosition({ 0.0f, 16.0f });
+	m_walls[2].setTextureRect({ { 0, 0 }, { (int)windowSize.y - 32, 16 } });
+	m_walls[2].setPosition({ 16.0f, 16.0f });
+	m_walls[2].setRotation(sf::degrees(90));
 
-	m_walls[3].setTextureRect({ { 0, 0 }, { 16, (int)windowSize.y - 32 } });
-	m_walls[3].setPosition({ (float)windowSize.x - 16.0f, 16.0f });
+	m_walls[3].setTextureRect({ { 0, 0 }, { (int)windowSize.y - 32, 16 } });
+	m_walls[3].setPosition({ (float)windowSize.x, 16.0f });
+	m_walls[3].setRotation(sf::degrees(90));
 
 	m_food.setPosition(getFoodPosition());
 }

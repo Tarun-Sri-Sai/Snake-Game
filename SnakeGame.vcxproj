@@ -167,14 +167,13 @@
     <ClInclude Include="state_manager.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="KnightWarrior-w16n8.otf" />
-    <Font Include="SupremeSpike-KVO8D.otf" />
+    <Font Include="knight_warrior.otf" />
+    <Font Include="supreme_spike.otf" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="food.png" />
     <Image Include="grass.png" />
     <Image Include="wall.png" />
-    <Image Include="wall_90.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -55,10 +55,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="KnightWarrior-w16n8.otf">
+    <Font Include="knight_warrior.otf">
       <Filter>Resource Files</Filter>
     </Font>
-    <Font Include="SupremeSpike-KVO8D.otf">
+    <Font Include="supreme_spike.otf">
       <Filter>Resource Files</Filter>
     </Font>
   </ItemGroup>
@@ -70,9 +70,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="food.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="wall_90.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

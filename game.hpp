@@ -13,7 +13,6 @@ enum GameAssets
 	GRASS,
 	FOOD,
 	WALL,
-	WALL_90,
 	SNAKE
 };
 
