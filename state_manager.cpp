@@ -6,6 +6,10 @@ Engine::StateManager::StateManager() : m_add(false), m_replace(false), m_remove(
 
 Engine::StateManager::~StateManager()
 {
+	while (!m_states.empty())
+	{
+		m_states.pop();
+	}
 }
 
 void Engine::StateManager::add(std::unique_ptr<State> t_state, bool t_replace = false)
@@ -47,6 +51,8 @@ void Engine::StateManager::process()
 		}
 
 		m_states.push(std::move(m_newState));
+		m_states.top()->setup();
+		m_states.top()->resume();
 		m_add = false;
 	}
 }

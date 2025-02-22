@@ -150,13 +150,19 @@
     <ClCompile Include="asset_manager.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="main_menu.cpp" />
     <ClCompile Include="state_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asset_manager.hpp" />
     <ClInclude Include="game.hpp" />
+    <ClInclude Include="main_menu.hpp" />
     <ClInclude Include="state.hpp" />
     <ClInclude Include="state_manager.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="KnightWarrior-w16n8.otf" />
+    <Font Include="SupremeSpike-KVO8D.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,22 +1,27 @@
 #include "game.hpp"
 #include <thread>
 #include <chrono>
+#include "main_menu.hpp"
 using namespace std::chrono_literals;
 
 Game::Game() : m_context(std::make_shared<GameContext>())
 {
-	m_context->m_window->create(sf::VideoMode({ 960, 540 }), "Snake Game", sf::Style::Close);
 }
 
 Game::~Game()
 {
 }
 
+void Game::setup()
+{
+	m_context->m_window->create(sf::VideoMode({ 960, 540 }), "Snake Game", sf::Style::Close);
+	m_context->m_assets->addFont(TITLE_FONT, "KnightWarrior-w16n8.otf");
+	m_context->m_assets->addFont(MENU_FONT, "SupremeSpike-KVO8D.otf");
+	m_context->m_states->add(std::make_unique<MainMenu>(m_context), false);
+}
+
 void Game::run()
 {
-	sf::CircleShape shape(100.0f);
-	shape.setFillColor(sf::Color::Green);
-
 	sf::Clock clock;
 	sf::Time timeSinceLastFrame{ sf::Time::Zero };
 
@@ -34,17 +39,10 @@ void Game::run()
 		{
 			timeSinceLastFrame -= FRAME_TIME;
 
-			while (const std::optional event = m_context->m_window->pollEvent())
-			{
-				if (event->is<sf::Event::Closed>())
-				{
-					m_context->m_window->close();
-				}
-			}
-
-			m_context->m_window->clear();
-			m_context->m_window->draw(shape);
-			m_context->m_window->display();
+			m_context->m_states->process();
+			m_context->m_states->get()->listen();
+			m_context->m_states->get()->update(FRAME_TIME);
+			m_context->m_states->get()->present();
 		}
 	}
 }
