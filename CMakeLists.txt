@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 project(SnakeGame)
 
@@ -15,20 +15,29 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(fmt)
 
 FetchContent_Declare(
-    sfml
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.0.1
+    sdl
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    GIT_TAG release-3.2.20
 )
-FetchContent_MakeAvailable(sfml)
+FetchContent_MakeAvailable(sdl)
+
+set(SDLTTF_VENDORED ON CACHE BOOL "Use vendored libraries" FORCE)
+
+FetchContent_Declare(
+        sdl_ttf
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
+        GIT_TAG release-3.2.2
+)
+FetchContent_MakeAvailable(sdl_ttf)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-file(GLOB_RECURSE HEADER_FILES include/*.h)
+file(GLOB_RECURSE HEADER_FILES include/*.hpp)
 
 add_executable(SnakeGame ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(SnakeGame PRIVATE include)
 
-target_link_libraries(SnakeGame PRIVATE sfml-graphics sfml-window sfml-system fmt::fmt)
+target_link_libraries(SnakeGame PRIVATE SDL3::SDL3 SDL3_ttf::SDL3_ttf fmt::fmt)
 
 add_custom_command(TARGET SnakeGame POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
