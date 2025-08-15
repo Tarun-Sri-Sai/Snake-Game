@@ -8,18 +8,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(FetchContent)
 
 FetchContent_Declare(
-    fmt
-    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-    GIT_TAG 11.1.3
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG 11.1.3
 )
 FetchContent_MakeAvailable(fmt)
 
 FetchContent_Declare(
-    sdl
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-    GIT_TAG release-3.2.20
+        sdl
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-3.2.20
 )
 FetchContent_MakeAvailable(sdl)
+
+FetchContent_Declare(
+        sdl_image
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+        GIT_TAG release-3.2.4
+)
+FetchContent_MakeAvailable(sdl_image)
 
 set(SDLTTF_VENDORED ON CACHE BOOL "Use vendored libraries" FORCE)
 
@@ -37,13 +44,13 @@ add_executable(SnakeGame ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(SnakeGame PRIVATE include)
 
-target_link_libraries(SnakeGame PRIVATE SDL3::SDL3 SDL3_ttf::SDL3_ttf fmt::fmt)
+target_link_libraries(SnakeGame PRIVATE SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf fmt::fmt)
 
 add_custom_command(TARGET SnakeGame POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:SnakeGame>/assets"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:SnakeGame>/assets"
 )
 
 if (MSVC)
     target_compile_options(SnakeGame PRIVATE /W4)
-endif()
+endif ()
