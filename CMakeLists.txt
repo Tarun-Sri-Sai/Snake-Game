@@ -14,28 +14,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(fmt)
 
-FetchContent_Declare(
-        sdl
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-        GIT_TAG release-3.2.20
-)
-FetchContent_MakeAvailable(sdl)
+find_package(SDL3 REQUIRED)
 
-FetchContent_Declare(
-        sdl_image
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-        GIT_TAG release-3.2.4
-)
-FetchContent_MakeAvailable(sdl_image)
+find_package(SDL3_image REQUIRED)
 
-set(SDLTTF_VENDORED ON CACHE BOOL "Use vendored libraries" FORCE)
-
-FetchContent_Declare(
-        sdl_ttf
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-        GIT_TAG release-3.2.2
-)
-FetchContent_MakeAvailable(sdl_ttf)
+find_package(SDL3_ttf REQUIRED)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 file(GLOB_RECURSE HEADER_FILES include/*.hpp)
@@ -45,12 +28,10 @@ add_executable(SnakeGame ${SRC_FILES} ${HEADER_FILES})
 target_include_directories(SnakeGame PRIVATE include)
 
 target_link_libraries(SnakeGame PRIVATE
-        harfbuzz
-        freetype
-        SDL3_ttf::SDL3_ttf
-        SDL3_image::SDL3_image
-        SDL3::SDL3
         fmt::fmt
+        SDL3::SDL3
+        SDL3_image::SDL3_image
+        SDL3_ttf::SDL3_ttf
 )
 
 add_custom_command(TARGET SnakeGame POST_BUILD
