@@ -11,14 +11,19 @@ namespace Engine
     {
     public:
         StateManager();
+
         ~StateManager();
 
         void add(std::unique_ptr<State> t_state, bool t_replace = true);
+
         void remove();
+
         void update();
-        std::unique_ptr<State>& get();
+
+        std::unique_ptr<State> &get();
+
     private:
-        std::stack<std::unique_ptr<State>> m_states;
+        std::stack<std::unique_ptr<State> > m_states;
         std::unique_ptr<State> m_newState;
         bool m_add;
         bool m_replace;

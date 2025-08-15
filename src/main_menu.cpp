@@ -1,51 +1,77 @@
 #include "main_menu.hpp"
 #include "game_play.hpp"
 
-MainMenu::MainMenu(std::shared_ptr<GameContext>& t_context) :
-    m_context(t_context),
-    m_gameTitle(t_context->assets->getFont(TITLE_FONT), "Snake Game", 60),
-    m_playButton(sf::Text(m_context->assets->getFont(MENU_FONT), "Press [Enter] to play")),
-    m_playButtonSelected(false),
-    m_elapsedTime(sf::Time::Zero)
+MainMenu::MainMenu(const std::shared_ptr<GameContext> &t_context) : m_context(t_context),
+                                                                    m_font(nullptr, &TTF_CloseFont),
+                                                                    m_gameTitleSurface(nullptr, &SDL_DestroySurface),
+                                                                    m_playButtonSurface(nullptr, &SDL_DestroySurface),
+                                                                    m_gameTitleTexture(nullptr, &SDL_DestroyTexture),
+                                                                    m_playButtonTexture(nullptr, &SDL_DestroyTexture),
+                                                                    m_gameTitleRect{0, 0, 0, 0},
+                                                                    m_playButtonRect{0, 0, 0, 0},
+                                                                    m_playButtonSelected(false),
+                                                                    m_elapsedTime(std::chrono::duration<float>::zero())
 {
-    m_gameTitle.setOrigin(m_gameTitle.getLocalBounds().getCenter());
-    m_gameTitle.setPosition({
-        m_context->window->getSize().x / 2.0f,
-        m_context->window->getSize().y / 2.0f - 150.0f });
+    m_font.reset(m_context->assets->getFont(TITLE_FONT));
 
-    m_playButton.setOrigin(m_playButton.getLocalBounds().getCenter());
-    m_playButton.setPosition({
-        m_context->window->getSize().x / 2.0f,
-        m_context->window->getSize().y / 2.0f });
+    constexpr SDL_Color white = {255, 255, 255, 255};
+
+    m_gameTitleSurface.reset(TTF_RenderText_Blended(m_font.get(), "Snake Game", 60, white));
+    m_gameTitleTexture.reset(SDL_CreateTextureFromSurface(m_context->renderer.get(), m_gameTitleSurface.get()));
+
+    TTF_Font *menuFont = m_context->assets->getFont(MENU_FONT);
+    m_playButtonSurface.reset(TTF_RenderText_Blended(menuFont, "Press [Enter] to play", 0, white));
+    m_playButtonTexture.reset(SDL_CreateTextureFromSurface(m_context->renderer.get(), m_playButtonSurface.get()));
+
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(m_context->window.get(), &windowWidth, &windowHeight);
+
+    float titleWidth, titleHeight;
+    SDL_GetTextureSize(m_gameTitleTexture.get(), &titleWidth, &titleHeight);
+    m_gameTitleRect = {
+        (static_cast<float>(windowWidth) - titleWidth) / 2.0f,
+        (static_cast<float>(windowHeight) / 2.0f) - 150.0f,
+        titleWidth,
+        titleHeight
+    };
+
+    float buttonWidth, buttonHeight;
+    SDL_GetTextureSize(m_playButtonTexture.get(), &buttonWidth, &buttonHeight);
+    m_playButtonRect = {
+        (static_cast<float>(windowWidth) - buttonWidth) / 2.0f,
+        (static_cast<float>(windowHeight) - buttonHeight) / 2.0f,
+        buttonWidth,
+        buttonHeight
+    };
 }
 
 void MainMenu::listen()
 {
-    while (const std::optional event = m_context->window->pollEvent())
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
     {
-        if (event->is<sf::Event::Closed>())
+        if (event.type == SDL_EVENT_KEY_DOWN)
         {
-            m_context->window->close();
-        }
-        else if (auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-        {
-            switch (keyPressed->code)
+            switch (event.key.key)
             {
-            case sf::Keyboard::Key::Enter:
-                m_playButtonSelected = true;
-                break;
-            case sf::Keyboard::Key::Escape:
-                m_context->window->close();
-                break;
+                case SDLK_RETURN:
+                case SDLK_RETURN2:
+                    m_playButtonSelected = true;
+                    break;
+                case SDLK_ESCAPE:
+                    m_context->running = false;
+                    break;
+                default:
+                    break;
             }
         }
     }
 }
 
-void MainMenu::update(const sf::Time& t_deltaTime)
+void MainMenu::update(const std::chrono::duration<float> &t_deltaTime)
 {
     m_elapsedTime += t_deltaTime;
-    if (m_elapsedTime.asSeconds() < Engine::TICK_TIME)
+    if (m_elapsedTime < Engine::TICK_TIME)
     {
         return;
     }
@@ -56,15 +82,16 @@ void MainMenu::update(const sf::Time& t_deltaTime)
         m_playButtonSelected = false;
     }
 
-    m_elapsedTime -= sf::seconds(Engine::TICK_TIME);
+    m_elapsedTime -= Engine::TICK_TIME;
 }
 
-void MainMenu::present()
+void MainMenu::draw()
 {
-    m_context->window->clear();
+    SDL_SetRenderDrawColor(m_context->renderer.get(), 0, 0, 0, 255);
+    SDL_RenderClear(m_context->renderer.get());
 
-    m_context->window->draw(m_gameTitle);
-    m_context->window->draw(m_playButton);
+    SDL_RenderTexture(m_context->renderer.get(), m_gameTitleTexture.get(), nullptr, &m_gameTitleRect);
+    SDL_RenderTexture(m_context->renderer.get(), m_playButtonTexture.get(), nullptr, &m_playButtonRect);
 
-    m_context->window->display();
+    SDL_RenderPresent(m_context->renderer.get());
 }

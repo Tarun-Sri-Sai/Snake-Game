@@ -1,27 +1,24 @@
 #include "Snake.hpp"
 
-Snake::Snake(const sf::Texture& t_texture) :
-    m_body(std::list<sf::Sprite>(3, sf::Sprite(t_texture)))
+Snake::Snake(SDL_Texture *t_texture) : m_body(std::list<SnakePiece>(3, SnakePiece(0.0f, 0.0f, 16.0f, 16.0f))),
+                                       m_texture(t_texture)
 {
     m_head = --m_body.end();
     m_tail = m_body.begin();
-    
+
     float x = 16.0f;
-    for (auto& piece : m_body)
+    for (auto &piece: m_body)
     {
-        piece.setPosition({ x, 16.0f });
+        piece.rect.x = x;
+        piece.rect.y = 16.0f;
         x += 16.0f;
     }
 }
 
-Snake::~Snake()
+void Snake::move(const SDL_FPoint &t_direction)
 {
-    m_body.clear();
-}
-
-void Snake::move(const sf::Vector2f& t_direction)
-{
-    m_tail->setPosition(m_head->getPosition() + t_direction);
+    m_tail->rect.x = m_head->rect.x + t_direction.x;
+    m_tail->rect.y = m_head->rect.y + t_direction.y;
     m_head = m_tail;
     ++m_tail;
 
@@ -31,16 +28,16 @@ void Snake::move(const sf::Vector2f& t_direction)
     }
 }
 
-bool Snake::isHeadOn(const sf::Sprite& t_other) const
+bool Snake::isHeadOn(const SDL_FRect &t_other) const
 {
-    return t_other.getGlobalBounds().findIntersection(m_head->getGlobalBounds()).has_value();
+    return SDL_HasRectIntersectionFloat(&t_other, &m_head->getRect());
 }
 
-bool Snake::isOn(const sf::Sprite& t_other) const
+bool Snake::isOn(const SDL_FRect &t_other) const
 {
-    for (auto& piece : m_body)
+    for (auto &piece: m_body)
     {
-        if (t_other.getGlobalBounds().findIntersection(piece.getGlobalBounds()).has_value())
+        if (SDL_HasRectIntersectionFloat(&t_other, &piece.getRect()))
         {
             return true;
         }
@@ -50,9 +47,9 @@ bool Snake::isOn(const sf::Sprite& t_other) const
 
 bool Snake::isDead() const
 {
-    for (std::list<sf::Sprite>::const_iterator piece = m_body.begin(); piece != std::prev(m_body.end(), 2); ++piece)
+    for (auto piece = m_body.begin(); piece != std::prev(m_body.end(), 2); ++piece)
     {
-        if (piece != m_head && isHeadOn(*piece))
+        if (piece != m_head && SDL_HasRectIntersectionFloat(&m_head->getRect(), &piece->getRect()))
         {
             return true;
         }
@@ -60,18 +57,22 @@ bool Snake::isDead() const
     return false;
 }
 
-void Snake::grow(const sf::Vector2f& t_direction)
+void Snake::grow(const SDL_FPoint &t_direction)
 {
-    sf::Sprite newPiece(m_body.begin()->getTexture());
-    newPiece.setPosition(m_head->getPosition() + t_direction);
+    SnakePiece newPiece(
+        m_head->rect.x + t_direction.x,
+        m_head->rect.y + t_direction.y,
+        16.0f,
+        16.0f
+    );
 
     m_head = m_body.insert(++m_head, newPiece);
 }
 
-void Snake::draw(sf::RenderTarget& t_target, sf::RenderStates t_states) const
+void Snake::render(SDL_Renderer *renderer) const
 {
-    for (auto& piece : m_body)
+    for (const auto &piece: m_body)
     {
-        t_target.draw(piece);
+        SDL_RenderTexture(renderer, m_texture, nullptr, &piece.rect);
     }
 }

@@ -4,24 +4,35 @@
 #include "state.hpp"
 #include "game.hpp"
 #include <memory>
-#include <SFML/Graphics/Text.hpp>
-#include <array>
+#include <SDL3_ttf/SDL_ttf.h>
 
-class MainMenu : public Engine::State
+class MainMenu final : public Engine::State
 {
 public:
-    MainMenu(std::shared_ptr<GameContext>& t_context);
-    ~MainMenu() = default;
+    explicit MainMenu(const std::shared_ptr<GameContext> &t_context);
+
+    ~MainMenu() override = default;
 
     void listen() override;
-    void update(const sf::Time& t_deltaTime) override;
-    void present() override;
+
+    void update(const std::chrono::duration<float> &t_deltaTime) override;
+
+    void draw() override;
+
 private:
     std::shared_ptr<GameContext> m_context;
-    sf::Text m_gameTitle;
-    sf::Text m_playButton;
+
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> m_font;
+    std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> m_gameTitleSurface;
+    std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> m_playButtonSurface;
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> m_gameTitleTexture;
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> m_playButtonTexture;
+
+    SDL_FRect m_gameTitleRect;
+    SDL_FRect m_playButtonRect;
+
     bool m_playButtonSelected;
-    sf::Time m_elapsedTime;
+    std::chrono::duration<float> m_elapsedTime;
 };
 
 #endif  // !MAIN_MENU_HPP

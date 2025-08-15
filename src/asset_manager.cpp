@@ -1,38 +1,37 @@
 #include "asset_manager.hpp"
+#include <SDL3_image/SDL_image.h>
 
-Engine::AssetManager::~AssetManager()
+void Engine::AssetManager::addTexture(const int t_id, const std::string &t_filePath, SDL_Renderer *renderer)
 {
-    m_textures.clear();
-    m_fonts.clear();
-}
-
-void Engine::AssetManager::addTexture(int t_id, const std::string& t_filePath, bool t_repeated)
-{
-    auto texture{ std::make_unique<sf::Texture>() };
-
-    if (texture->loadFromFile(t_filePath))
+    if (SDL_Surface *surface = IMG_Load(t_filePath.c_str()))
     {
-        texture->setRepeated(t_repeated);
-        m_textures[t_id] = std::move(texture);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_DestroySurface(surface);
+
+        if (!texture)
+        {
+            return;
+        }
+        m_textures[t_id] = std::unique_ptr<SDL_Texture>(texture);
     }
 }
 
-void Engine::AssetManager::addFont(int t_id, const std::string& t_filePath)
+void Engine::AssetManager::addFont(const int t_id, const std::string &t_filePath, const int fontSize)
 {
-    auto font{ std::make_unique<sf::Font>() };
-
-    if (font->openFromFile(t_filePath))
+    if (TTF_Font *font = TTF_OpenFont(t_filePath.c_str(), static_cast<float>(fontSize)))
     {
-        m_fonts[t_id] = std::move(font);
+        m_fonts[t_id] =  std::unique_ptr<TTF_Font>(font);
     }
 }
 
-const sf::Texture& Engine::AssetManager::getTexture(int t_id) const
+SDL_Texture *Engine::AssetManager::getTexture(const int t_id) const
 {
-    return *(m_textures.at(t_id).get());
+    const auto it = m_textures.find(t_id);
+    return (it != m_textures.end()) ? it->second.get() : nullptr;
 }
 
-const sf::Font& Engine::AssetManager::getFont(int t_id) const
+TTF_Font *Engine::AssetManager::getFont(const int t_id) const
 {
-    return *(m_fonts.at(t_id).get());
+    const auto it = m_fonts.find(t_id);
+    return (it != m_fonts.end()) ? it->second.get() : nullptr;
 }

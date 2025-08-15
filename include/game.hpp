@@ -3,7 +3,7 @@
 
 #include "asset_manager.hpp"
 #include "state_manager.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SDL3/SDL.h>
 #include <memory>
 #include <filesystem>
 
@@ -23,30 +23,31 @@ struct GameContext
 {
     std::unique_ptr<Engine::AssetManager> assets;
     std::unique_ptr<Engine::StateManager> states;
-    std::unique_ptr<sf::RenderWindow> window;
+    std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window;
+    std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer;
+    bool running;
 
-    GameContext()
-    {
-        assets = std::make_unique<Engine::AssetManager>();
-        states = std::make_unique<Engine::StateManager>();
-        window = std::make_unique<sf::RenderWindow>();
-    }
+    GameContext();
+
+    ~GameContext();
 };
 
-const fs::path ASSETS_DIR = fs::path("assets");
+const auto ASSETS_DIR = fs::path("assets");
 
 class Game
 {
 public:
     Game();
+
     ~Game() = default;
 
-    void run();
+    void run() const;
+
 private:
     std::shared_ptr<GameContext> m_context;
-    const sf::Time FRAME_TIME = sf::seconds(1.0f / 60.0f);
+    const std::chrono::duration<float> FRAME_TIME{1.0f / 60.0f};
 
-    std::string getAssetFile(const std::string& t_fileName);
+    static std::string getAssetFile(const std::string &t_fileName);
 };
 
 #endif  // !GAME_HPP

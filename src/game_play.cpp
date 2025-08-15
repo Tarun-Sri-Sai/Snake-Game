@@ -1,128 +1,148 @@
 #include "game_play.hpp"
-#include <iostream>
 #include "game_over.hpp"
 #include "game_pause.hpp"
+#include <algorithm>
 
-GamePlay::GamePlay(std::shared_ptr<GameContext>& t_context) :
-    m_context(t_context),
-    m_grass(m_context->assets->getTexture(GRASS)),
-    m_food(m_context->assets->getTexture(FOOD)),
-    m_walls{
-        sf::Sprite(m_context->assets->getTexture(WALL)),
-        sf::Sprite(m_context->assets->getTexture(WALL)),
-        sf::Sprite(m_context->assets->getTexture(WALL)),
-        sf::Sprite(m_context->assets->getTexture(WALL))
-    },
-    m_snake(m_context->assets->getTexture(SNAKE)),
-    m_snakeDirection(RIGHT),
-    m_elapsedTime(sf::Time::Zero),
-    m_generator{ std::random_device{}() },
-    m_score(0)
+GamePlay::GamePlay(const std::shared_ptr<GameContext> &t_context) : m_context(t_context),
+                                                                    m_grassTexture(nullptr, &SDL_DestroyTexture),
+                                                                    m_foodTexture(nullptr, &SDL_DestroyTexture),
+                                                                    m_wallTextures{
+                                                                        std::unique_ptr<SDL_Texture, decltype(&
+                                                                            SDL_DestroyTexture)>(
+                                                                            nullptr, &SDL_DestroyTexture),
+                                                                        std::unique_ptr<SDL_Texture, decltype(&
+                                                                            SDL_DestroyTexture)>(
+                                                                            nullptr, &SDL_DestroyTexture),
+                                                                        std::unique_ptr<SDL_Texture, decltype(&
+                                                                            SDL_DestroyTexture)>(
+                                                                            nullptr, &SDL_DestroyTexture),
+                                                                        std::unique_ptr<SDL_Texture, decltype(&
+                                                                            SDL_DestroyTexture)>(
+                                                                            nullptr, &SDL_DestroyTexture)
+                                                                    },
+                                                                    m_grassRect{0, 0, 0, 0},
+                                                                    m_foodRect{0, 0, 0, 0},
+                                                                    m_snake(m_context->assets->getTexture(SNAKE)),
+                                                                    m_snakeDirection(RIGHT),
+                                                                    m_elapsedTime(std::chrono::duration<float>::zero()),
+m_generator{std::random_device{}()},
+m_score(0)
 {
-    m_grass.setTextureRect(m_context->window->getViewport(m_context->window->getDefaultView()));
+    m_grassTexture.reset(m_context->assets->getTexture(GRASS));
+    m_foodTexture.reset(m_context->assets->getTexture(FOOD));
 
-    sf::Vector2u windowSize = m_context->window->getSize();
+    for (int i = 0; i < 4; ++i)
+    {
+        m_wallTextures[i].reset(m_context->assets->getTexture(WALL));
+    }
 
-    m_walls[0].setTextureRect({ { 0, 0 }, { (int)windowSize.x, 16 } });
-    m_walls[0].setPosition({ 0.0f, 0.0f });
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(m_context->window.get(), &windowWidth, &windowHeight);
 
-    m_walls[1].setTextureRect({ { 0, 0 }, { (int)windowSize.x, 16 } });
-    m_walls[1].setPosition({ 0.0f, (float)windowSize.y - 16.0f });
+    m_grassRect = {0.0f, 0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight)};
 
-    m_walls[2].setTextureRect({ { 0, 0 }, { (int)windowSize.y - 32, 16 } });
-    m_walls[2].setPosition({ 16.0f, 16.0f });
-    m_walls[2].setRotation(sf::degrees(90));
-
-    m_walls[3].setTextureRect({ { 0, 0 }, { (int)windowSize.y - 32, 16 } });
-    m_walls[3].setPosition({ (float)windowSize.x, 16.0f });
-    m_walls[3].setRotation(sf::degrees(90));
+    m_wallRects[0] = {0.0f, 0.0f, static_cast<float>(windowWidth), 16.0f};
+    m_wallRects[1] = {0.0f, static_cast<float>(windowHeight) - 16.0f, static_cast<float>(windowWidth), 16.0f};
+    m_wallRects[2] = {0.0f, 16.0f, 16.0f, static_cast<float>(windowHeight) - 32.0f};
+    m_wallRects[3] = {static_cast<float>(windowWidth) - 16.0f, 16.0f, 16.0f, static_cast<float>(windowHeight) - 32.0f};
 
     setFoodPosition();
 }
 
-sf::Vector2f GamePlay::getSnakeDirection()
+SDL_FPoint GamePlay::getSnakeDirection() const
 {
     switch (m_snakeDirection)
     {
-    case UP:
-        return { 0.f, -16.0f };
-    case DOWN:
-        return { 0.f, 16.0f };
-    case LEFT:
-        return { -16.0f, 0.0f };
-    case RIGHT:
-        return { 16.0f, 0.0f };
-    default:
-        return { 0.0f, 0.0f };
+        case UP:
+            return {0.0f, -16.0f};
+        case DOWN:
+            return {0.0f, 16.0f};
+        case LEFT:
+            return {-16.0f, 0.0f};
+        case RIGHT:
+            return {16.0f, 0.0f};
+        default:
+            return {0.0f, 0.0f};
     }
 }
 
 void GamePlay::setFoodPosition()
 {
-    sf::Vector2f result = {
-        (float)getRandom(1, (960 - 32) / 16) * 16,
-        (float)getRandom(1, (540 - 32) / 16) * 16
-    };
-    m_food.setPosition(result);
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(m_context->window.get(), &windowWidth, &windowHeight);
 
-    while (m_snake.isOn(m_food))
+    SDL_FPoint result = {
+        static_cast<float>(getRandom( (windowWidth - 32) / 16)) * 16,
+        static_cast<float>(getRandom((windowHeight - 32) / 16)) * 16
+    };
+
+    m_foodRect.x = result.x;
+    m_foodRect.y = result.y;
+
+    float foodWidth, foodHeight;
+    SDL_GetTextureSize(m_foodTexture.get(), &foodWidth, &foodHeight);
+    m_foodRect.w = foodWidth;
+    m_foodRect.h = foodHeight;
+
+    while (m_snake.isOn(m_foodRect))
     {
         result = {
-            (float)getRandom(1, (960 - 32) / 16) * 16,
-            (float)getRandom(1, (540 - 32) / 16) * 16
+            static_cast<float>(getRandom((windowWidth - 32) / 16)) * 16,
+            static_cast<float>(getRandom((windowHeight - 32) / 16)) * 16
         };
-        m_food.setPosition(result);
+
+        m_foodRect.x = result.x;
+        m_foodRect.y = result.y;
     }
 }
 
 void GamePlay::listen()
 {
-    while (const std::optional event = m_context->window->pollEvent())
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
     {
-        if (event->is<sf::Event::Closed>())
+        if (event.type == SDL_EVENT_KEY_DOWN)
         {
-            m_context->window->close();
-        }
-        else if (auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-        {
-            switch (keyPressed->code)
+            switch (event.key.key)
             {
-            case sf::Keyboard::Key::Up:
-                if (m_snakeDirection != DOWN)
-                {
-                    m_snakeDirection = UP;
-                }
-                break;
-            case sf::Keyboard::Key::Down:
-                if (m_snakeDirection != UP)
-                {
-                    m_snakeDirection = DOWN;
-                }
-                break;
-            case sf::Keyboard::Key::Left:
-                if (m_snakeDirection != RIGHT)
-                {
-                    m_snakeDirection = LEFT;
-                }
-                break;
-            case sf::Keyboard::Key::Right:
-                if (m_snakeDirection != LEFT)
-                {
-                    m_snakeDirection = RIGHT;
-                }
-                break;
-            case sf::Keyboard::Key::Escape:
-                m_context->states->add(std::make_unique<GamePause>(m_context, m_score), false);
-                break;
+                case SDLK_UP:
+                    if (m_snakeDirection != DOWN)
+                    {
+                        m_snakeDirection = UP;
+                    }
+                    break;
+                case SDLK_DOWN:
+                    if (m_snakeDirection != UP)
+                    {
+                        m_snakeDirection = DOWN;
+                    }
+                    break;
+                case SDLK_LEFT:
+                    if (m_snakeDirection != RIGHT)
+                    {
+                        m_snakeDirection = LEFT;
+                    }
+                    break;
+                case SDLK_RIGHT:
+                    if (m_snakeDirection != LEFT)
+                    {
+                        m_snakeDirection = RIGHT;
+                    }
+                    break;
+                case SDLK_ESCAPE:
+                    m_context->states->add(std::make_unique<GamePause>(m_context, m_score), false);
+                    break;
+                default:
+                    break;
             }
         }
     }
 }
 
-void GamePlay::update(const sf::Time& t_deltaTime)
+void GamePlay::update(const std::chrono::duration<float> &t_deltaTime)
 {
     m_elapsedTime += t_deltaTime;
-    if (m_elapsedTime.asSeconds() < Engine::TICK_TIME)
+    if (m_elapsedTime < Engine::TICK_TIME)
     {
         return;
     }
@@ -133,51 +153,49 @@ void GamePlay::update(const sf::Time& t_deltaTime)
         return;
     }
 
-    if (m_snake.isHeadOn(m_food))
+    if (m_snake.isHeadOn(m_foodRect))
     {
         m_score++;
         m_snake.grow(getSnakeDirection());
         setFoodPosition();
-    }
-    else
+    } else
     {
         m_snake.move(getSnakeDirection());
     }
 
-    m_elapsedTime -= sf::seconds(Engine::TICK_TIME);
+    m_elapsedTime -= Engine::TICK_TIME;
 }
 
-bool GamePlay::isSnakeOnWall()
+bool GamePlay::isSnakeOnWall() const
 {
-    for (auto& wall : m_walls)
-    {
-        if (m_snake.isHeadOn(wall))
-        {
-            return true;
-        }
-    }
-    return false;
+    return std::any_of(m_wallRects.begin(), m_wallRects.end(),
+                       [this](const SDL_FRect &wall)
+                       {
+                           return m_snake.isHeadOn(wall);
+                       });
 }
 
-void GamePlay::present()
+void GamePlay::draw()
 {
-    m_context->window->clear();
+    SDL_SetRenderDrawColor(m_context->renderer.get(), 0, 0, 0, 255);
+    SDL_RenderClear(m_context->renderer.get());
 
-    m_context->window->draw(m_grass);
+    SDL_RenderTexture(m_context->renderer.get(), m_grassTexture.get(), nullptr, &m_grassRect);
 
-    for (auto& wall : m_walls)
+    for (size_t i = 0; i < m_wallTextures.size(); ++i)
     {
-        m_context->window->draw(wall);
+        SDL_RenderTexture(m_context->renderer.get(), m_wallTextures[i].get(), nullptr, &m_wallRects[i]);
     }
 
-    m_context->window->draw(m_food);
-    m_context->window->draw(m_snake);
+    SDL_RenderTexture(m_context->renderer.get(), m_foodTexture.get(), nullptr, &m_foodRect);
+    m_snake.render(m_context->renderer.get());
 
-    m_context->window->display();
+    SDL_RenderPresent(m_context->renderer.get());
 }
 
-int GamePlay::getRandom(int t_min, int t_max) {
-    std::uniform_int_distribution<int> distribution(t_min, t_max);
+int GamePlay::getRandom(const int t_max)
+{
+    std::uniform_int_distribution<int> distribution(1, t_max);
 
     return distribution(m_generator);
 }

@@ -12,7 +12,7 @@ Engine::StateManager::~StateManager()
     }
 }
 
-void Engine::StateManager::add(std::unique_ptr<State> t_state, bool t_replace)
+void Engine::StateManager::add(std::unique_ptr<State> t_state, const bool t_replace)
 {
     m_add = true;
     m_newState = std::move(t_state);
@@ -44,7 +44,7 @@ void Engine::StateManager::update()
     }
 }
 
-std::unique_ptr<Engine::State>& Engine::StateManager::get()
+std::unique_ptr<Engine::State> &Engine::StateManager::get()
 {
     return m_states.top();
 }
