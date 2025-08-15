@@ -44,7 +44,14 @@ add_executable(SnakeGame ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(SnakeGame PRIVATE include)
 
-target_link_libraries(SnakeGame PRIVATE SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf fmt::fmt)
+target_link_libraries(SnakeGame PRIVATE
+        harfbuzz
+        freetype
+        SDL3_ttf::SDL3_ttf
+        SDL3_image::SDL3_image
+        SDL3::SDL3
+        fmt::fmt
+)
 
 add_custom_command(TARGET SnakeGame POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
