@@ -30,9 +30,9 @@ namespace Engine
     class AssetManager
     {
     public:
-        AssetManager() = default;
+        AssetManager();
 
-        ~AssetManager() = default;
+        ~AssetManager();
 
         void addTexture(int t_id, const std::string &t_filePath, SDL_Renderer *renderer);
 

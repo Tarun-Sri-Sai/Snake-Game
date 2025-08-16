@@ -1,6 +1,20 @@
 #include "asset_manager.hpp"
 #include <SDL3_image/SDL_image.h>
 
+Engine::AssetManager::AssetManager()
+{
+    if (!TTF_Init())
+    {
+        SDL_Log("Failed to initialize SDL_ttf: %s", SDL_GetError());
+        SDL_Quit();
+    }
+}
+
+Engine::AssetManager::~AssetManager()
+{
+    TTF_Quit();
+}
+
 void Engine::AssetManager::addTexture(const int t_id, const std::string &t_filePath, SDL_Renderer *renderer)
 {
     if (SDL_Surface *surface = IMG_Load(t_filePath.c_str()))
