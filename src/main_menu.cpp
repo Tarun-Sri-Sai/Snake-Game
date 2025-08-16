@@ -50,7 +50,10 @@ void MainMenu::listen()
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        if (event.type == SDL_EVENT_KEY_DOWN)
+        if (event.type == SDL_EVENT_QUIT)
+        {
+            m_context->running = false;
+        } else if (event.type == SDL_EVENT_KEY_DOWN)
         {
             switch (event.key.key)
             {

@@ -77,15 +77,6 @@ void Game::run() const
         {
             timeSinceLastFrame -= FRAME_TIME;
 
-            SDL_Event event;
-            while (SDL_PollEvent(&event))
-            {
-                if (event.type == SDL_EVENT_QUIT)
-                {
-                    m_context->running = false;
-                }
-            }
-
             m_context->states->update();
             m_context->states->get()->listen();
             m_context->states->get()->update(FRAME_TIME);
