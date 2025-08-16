@@ -16,11 +16,11 @@ MainMenu::MainMenu(const std::shared_ptr<GameContext> &t_context) : m_context(t_
 
     constexpr SDL_Color white = {255, 255, 255, 255};
 
-    m_gameTitleSurface.reset(TTF_RenderText_Blended(m_font.get(), "Snake Game", 60, white));
+    m_gameTitleSurface.reset(TTF_RenderText_Blended(m_font.get(), "Snake Game", 0, white));
     m_gameTitleTexture.reset(SDL_CreateTextureFromSurface(m_context->renderer.get(), m_gameTitleSurface.get()));
 
-    TTF_Font *menuFont = m_context->assets->getFont(MENU_FONT);
-    m_playButtonSurface.reset(TTF_RenderText_Blended(menuFont, "Press [Enter] to play", 0, white));
+    const auto menuFont = std::unique_ptr<TTF_Font>(m_context->assets->getFont(MENU_FONT));
+    m_playButtonSurface.reset(TTF_RenderText_Blended(menuFont.get(), "Press [Enter] to play", 0, white));
     m_playButtonTexture.reset(SDL_CreateTextureFromSurface(m_context->renderer.get(), m_playButtonSurface.get()));
 
     int windowWidth, windowHeight;

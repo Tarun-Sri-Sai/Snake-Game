@@ -22,15 +22,14 @@ GameOver::GameOver(const std::shared_ptr<GameContext> &t_context, int t_score) :
 
     constexpr SDL_Color white = {255, 255, 255, 255};
 
-    m_titleSurface.reset(TTF_RenderText_Blended(m_font.get(), "Game over!", 60, white));
+    m_titleSurface.reset(TTF_RenderText_Blended(m_font.get(), "Game over!", 0, white));
     m_titleTexture.reset(SDL_CreateTextureFromSurface(m_context->renderer.get(), m_titleSurface.get()));
 
-    TTF_Font *menuFont = m_context->assets->getFont(MENU_FONT);
-    const std::string scoreString = fmt::format("Score: {}", t_score);
-    m_scoreSurface.reset(TTF_RenderText_Blended(menuFont, scoreString.c_str(), 0, white));
+    const auto menuFont = std::unique_ptr<TTF_Font>(m_context->assets->getFont(MENU_FONT));
+    m_scoreSurface.reset(TTF_RenderText_Blended(menuFont.get(), fmt::format("Score: {}", t_score).c_str(), 0, white));
     m_scoreTexture.reset(SDL_CreateTextureFromSurface(m_context->renderer.get(), m_scoreSurface.get()));
 
-    m_retryButtonSurface.reset(TTF_RenderText_Blended(menuFont, "Press [Enter] to retry", 0, white));
+    m_retryButtonSurface.reset(TTF_RenderText_Blended(menuFont.get(), "Press [Enter] to retry", 0, white));
     m_retryButtonTexture.reset(SDL_CreateTextureFromSurface(m_context->renderer.get(), m_retryButtonSurface.get()));
 
     int windowWidth, windowHeight;
