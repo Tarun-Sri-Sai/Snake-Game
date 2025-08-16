@@ -4,12 +4,12 @@
 #include "main_menu.hpp"
 using namespace std::chrono_literals;
 
-GameContext::GameContext() : window(nullptr, &SDL_DestroyWindow), renderer(nullptr, &SDL_DestroyRenderer),
+GameContext::GameContext() : assets(std::make_unique<Engine::AssetManager>()),
+                             states(std::make_unique<Engine::StateManager>()),
+                             window(nullptr, &SDL_DestroyWindow),
+                             renderer(nullptr, &SDL_DestroyRenderer),
                              running(true)
 {
-    assets = std::make_unique<Engine::AssetManager>();
-    states = std::make_unique<Engine::StateManager>();
-
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
         throw std::runtime_error("SDL_Init failed");

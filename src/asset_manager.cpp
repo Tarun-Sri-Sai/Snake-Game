@@ -34,7 +34,7 @@ void Engine::AssetManager::addFont(const int t_id, const std::string &t_filePath
 {
     if (TTF_Font *font = TTF_OpenFont(t_filePath.c_str(), static_cast<float>(fontSize)))
     {
-        m_fonts[t_id] =  std::unique_ptr<TTF_Font>(font);
+        m_fonts[t_id] = std::unique_ptr<TTF_Font>(font);
     }
 }
 

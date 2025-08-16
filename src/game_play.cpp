@@ -25,8 +25,8 @@ GamePlay::GamePlay(const std::shared_ptr<GameContext> &t_context) : m_context(t_
                                                                     m_snake(m_context->assets->getTexture(SNAKE)),
                                                                     m_snakeDirection(RIGHT),
                                                                     m_elapsedTime(std::chrono::duration<float>::zero()),
-m_generator{std::random_device{}()},
-m_score(0)
+                                                                    m_generator{std::random_device{}()},
+                                                                    m_score(0)
 {
     m_grassTexture.reset(m_context->assets->getTexture(GRASS));
     m_foodTexture.reset(m_context->assets->getTexture(FOOD));
@@ -72,7 +72,7 @@ void GamePlay::setFoodPosition()
     SDL_GetWindowSize(m_context->window.get(), &windowWidth, &windowHeight);
 
     SDL_FPoint result = {
-        static_cast<float>(getRandom( (windowWidth - 32) / 16)) * 16,
+        static_cast<float>(getRandom((windowWidth - 32) / 16)) * 16,
         static_cast<float>(getRandom((windowHeight - 32) / 16)) * 16
     };
 
