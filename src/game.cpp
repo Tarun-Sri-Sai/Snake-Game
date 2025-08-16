@@ -2,6 +2,7 @@
 #include <thread>
 #include <chrono>
 #include "main_menu.hpp"
+#include <fmt/format.h>
 using namespace std::chrono_literals;
 
 GameContext::GameContext() : assets(std::make_unique<Engine::AssetManager>()),
@@ -12,21 +13,21 @@ GameContext::GameContext() : assets(std::make_unique<Engine::AssetManager>()),
 {
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
-        throw std::runtime_error("SDL_Init failed");
+        throw std::runtime_error(fmt::format("SDL_Init failed: {}", SDL_GetError()));
     }
 
     window.reset(SDL_CreateWindow("Snake Game", 960, 540, 0));
     if (!window)
     {
         SDL_Quit();
-        throw std::runtime_error("SDL_CreateWindow failed");
+        throw std::runtime_error(fmt::format("SDL_CreateWindow failed: {}", SDL_GetError()));
     }
 
     renderer.reset(SDL_CreateRenderer(window.get(), nullptr));
     if (!renderer)
     {
         SDL_Quit();
-        throw std::runtime_error("SDL_CreateRenderer failed");
+        throw std::runtime_error(fmt::format("SDL_CreateRenderer failed: {}", SDL_GetError()));
     }
 }
 
