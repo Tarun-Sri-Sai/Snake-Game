@@ -10,7 +10,7 @@ void WindowManager::listen() {
     m_stack.top().get()->listen();
 }
 
-void WindowManager::update(const float &t_deltaTime) {
+void WindowManager::update(float t_deltaTime) {
     if (m_stack.empty()) {
         return;
     }

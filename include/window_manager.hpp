@@ -9,7 +9,7 @@ class WindowManager {
 public:
   WindowManager();
   void listen();
-  void update(const float &t_deltaTime);
+  void update(float t_deltaTime);
   void draw();
   void open(std::unique_ptr<Window> t_window, bool inplace = true);
 
