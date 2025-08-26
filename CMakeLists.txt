@@ -21,7 +21,7 @@ find_package(SDL3_ttf REQUIRED)
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 file(GLOB_RECURSE HEADER_FILES "include/*.hpp")
 
-add_executable(SnakeGame ${SRC_FILES} ${HEADER_FILES})
+add_executable(SnakeGame ${SRC_FILES})
 
 target_include_directories(SnakeGame PRIVATE "include")
 
