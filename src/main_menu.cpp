@@ -1,6 +1,7 @@
 #include "main_menu.hpp"
 
-MainMenu::MainMenu() {}
+MainMenu::MainMenu(std::shared_ptr<SDL_Renderer> t_renderer)
+    : m_renderer(t_renderer) {}
 
 MainMenu::~MainMenu() {}
 

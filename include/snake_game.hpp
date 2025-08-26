@@ -10,6 +10,9 @@ using Clock = std::chrono::high_resolution_clock;
 class SnakeGame {
 public:
   SnakeGame();
+
+  ~SnakeGame() = default;
+  
   void run();
 
 private:

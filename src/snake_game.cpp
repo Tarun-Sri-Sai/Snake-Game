@@ -6,7 +6,7 @@ SnakeGame::SnakeGame()
       m_windowManager(std::make_unique<WindowManager>()) {}
 
 void SnakeGame::run() {
-  m_windowManager->open(std::make_unique<MainMenu>());
+  m_windowManager->open<MainMenu>();
 
   m_prevTimePoint = Clock::now();
   while (m_gameContext->getRunning()) {
