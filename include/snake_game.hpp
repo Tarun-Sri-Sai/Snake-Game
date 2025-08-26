@@ -1,7 +1,11 @@
 #ifndef SNAKE_GAME_HPP
 #define SNAKE_GAME_HPP
 
+#include "game_context.hpp"
 #include "window_manager.hpp"
+#include <chrono>
+
+using Clock = std::chrono::high_resolution_clock;
 
 class SnakeGame {
 public:
@@ -9,6 +13,8 @@ public:
   void run();
 
 private:
+  GameContext &m_gameContext;
+  Clock::time_point m_prevTimePoint;
   std::unique_ptr<WindowManager> m_windowManager;
 };
 

@@ -1,8 +1,21 @@
 #include "snake_game.hpp"
-#include "window_manager.hpp"
+#include "main_menu.hpp"
 
-SnakeGame::SnakeGame() : m_windowManager(std::make_unique<WindowManager>()) {}
+SnakeGame::SnakeGame()
+    : m_gameContext(GameContext::getInstance()), m_prevTimePoint(),
+      m_windowManager(std::make_unique<WindowManager>()) {}
 
 void SnakeGame::run() {
-    // TODO: Add logic to run the game loop
+  m_windowManager->open(std::make_unique<MainMenu>());
+
+  m_prevTimePoint = Clock::now();
+  while (m_gameContext.m_running) {
+    auto currTimePoint = Clock::now();
+    std::chrono::duration<float> delta = currTimePoint - m_prevTimePoint;
+    auto deltaTime = delta.count();
+
+    m_windowManager->listen();
+    m_windowManager->update(deltaTime);
+    m_windowManager->draw();
+  }
 }
