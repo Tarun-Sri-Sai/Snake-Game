@@ -5,7 +5,7 @@
 #include <SDL3/SDL_render.h>
 #include <memory>
 
-class MainMenu : public Window {
+class MainMenu final : public Window {
 public:
   MainMenu(std::shared_ptr<SDL_Renderer> t_renderer);
 

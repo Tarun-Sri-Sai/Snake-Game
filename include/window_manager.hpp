@@ -7,7 +7,7 @@
 #include <memory>
 #include <stack>
 
-class WindowManager {
+class WindowManager final {
 public:
   WindowManager();
 

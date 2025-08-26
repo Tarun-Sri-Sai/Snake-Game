@@ -7,7 +7,7 @@
 
 using Clock = std::chrono::high_resolution_clock;
 
-class SnakeGame {
+class SnakeGame final {
 public:
   SnakeGame();
 

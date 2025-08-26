@@ -1,7 +1,7 @@
 #ifndef GAME_CONTEXT_HPP
 #define GAME_CONTEXT_HPP
 
-class GameContext {
+class GameContext final {
 public:
   GameContext();
   
