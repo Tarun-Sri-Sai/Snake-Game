@@ -2,6 +2,7 @@
 #define WINDOW_MANAGER_HPP
 
 #include "window.hpp"
+#include "text_renderer.hpp"
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <memory>
@@ -26,13 +27,14 @@ public:
     }
 
     m_stack.push(
-        std::make_unique<WindowType>(m_renderer, std::forward<Args>(args)...));
+        std::make_unique<WindowType>(m_renderer, m_textRenderer, std::forward<Args>(args)...));
   }
 
 private:
   std::stack<std::unique_ptr<Window>> m_stack;
   std::shared_ptr<SDL_Window> m_window;
   std::shared_ptr<SDL_Renderer> m_renderer;
+  std::shared_ptr<TextRenderer> m_textRenderer;
 };
 
 #endif // !WINDOW_MANAGER_HPP
