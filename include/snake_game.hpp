@@ -13,9 +13,9 @@ public:
   void run();
 
 private:
-  GameContext &m_gameContext;
   Clock::time_point m_prevTimePoint;
   std::unique_ptr<WindowManager> m_windowManager;
+  std::shared_ptr<GameContext> m_gameContext;
 };
 
 #endif // !SNAKE_GAME_HPP
