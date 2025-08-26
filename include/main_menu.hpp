@@ -1,8 +1,8 @@
 #ifndef MAIN_MENU_HPP
 #define MAIN_MENU_HPP
 
-#include "SDL3/SDL_render.h"
 #include "window.hpp"
+#include <SDL3/SDL_render.h>
 #include <memory>
 
 class MainMenu : public Window {

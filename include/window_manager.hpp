@@ -1,9 +1,9 @@
 #ifndef WINDOW_MANAGER_HPP
 #define WINDOW_MANAGER_HPP
 
-#include "SDL3/SDL_render.h"
-#include "SDL3/SDL_video.h"
 #include "window.hpp"
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 #include <memory>
 #include <stack>
 

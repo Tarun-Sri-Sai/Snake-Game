@@ -1,5 +1,5 @@
 #include "window_manager.hpp"
-#include "SDL3/SDL_init.h"
+#include <SDL3/SDL_init.h>
 #include <fmt/format.h>
 #include <stdexcept>
 
