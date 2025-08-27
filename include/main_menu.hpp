@@ -2,7 +2,9 @@
 #define MAIN_MENU_HPP
 
 #include "asset_manager.hpp"
+#include "button.hpp"
 #include "game_context.hpp"
+#include "text.hpp"
 #include "window.hpp"
 #include "window_manager.hpp"
 #include <SDL3/SDL_render.h>
@@ -28,6 +30,9 @@ private:
   std::shared_ptr<TextRenderer> m_textRenderer;
   std::shared_ptr<GameContext> m_gameContext;
   std::shared_ptr<AssetManager> m_assetManager;
+  Text m_title;
+  Button m_play;
+  bool m_playPressed;
 };
 
 #endif // !MAIN_MENU_HPP

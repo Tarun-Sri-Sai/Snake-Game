@@ -10,7 +10,8 @@ WindowManager::WindowManager() : m_stack() {
         fmt::format("Failed to initialize SDL: {}", SDL_GetError()));
   }
 
-  SDL_Window *window = SDL_CreateWindow(WINDOW_TITLE, 960, 540, 0);
+  SDL_Window *window =
+      SDL_CreateWindow(WINDOW_TITLE.c_str(), WINDOW_WIDTH, WINDOW_HEIGHT, 0);
   if (!window) {
     SDL_Quit();
     throw std::runtime_error(
