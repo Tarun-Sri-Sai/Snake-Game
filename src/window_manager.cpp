@@ -28,7 +28,7 @@ WindowManager::WindowManager() : m_stack() {
   }
   m_renderer = std::shared_ptr<SDL_Renderer>(renderer, SDL_DestroyRenderer);
 
-  m_textRenderer = std::make_shared<TextRenderer>(m_renderer);
+  m_renderManager = std::make_shared<RenderManager>(m_renderer);
 }
 
 WindowManager::~WindowManager() {

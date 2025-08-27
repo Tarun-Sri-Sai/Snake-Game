@@ -1,13 +1,12 @@
 #include "main_menu.hpp"
-#include "SDL3/SDL_render.h"
 #include "constants.hpp"
 #include <SDL3/SDL_events.h>
 
 MainMenu::MainMenu(const std::shared_ptr<SDL_Renderer> &t_renderer,
-                   const std::shared_ptr<TextRenderer> &t_textRenderer,
+                   const std::shared_ptr<RenderManager> &t_renderManager,
                    const std::shared_ptr<GameContext> &t_gameContext,
                    const std::shared_ptr<AssetManager> &t_assetManager)
-    : m_renderer(t_renderer), m_textRenderer(t_textRenderer),
+    : m_renderer(t_renderer), m_renderManager(t_renderManager),
       m_gameContext(t_gameContext), m_assetManager(t_assetManager),
       m_title(t_assetManager->getFont(FONT_ROBOTO_BOLD, 144), WINDOW_TITLE,
               {255, 255, 255, 255}, 120.f, 90.f),
@@ -52,8 +51,8 @@ void MainMenu::draw() {
   SDL_SetRenderDrawColor(m_renderer.get(), 0, 0, 0, 255);
   SDL_RenderClear(m_renderer.get());
 
-  m_textRenderer->render(m_title);
-  m_textRenderer->render(m_play);
+  m_renderManager->render(m_title);
+  m_renderManager->render(m_play);
 
   SDL_RenderPresent(m_renderer.get());
 }

@@ -1,6 +1,5 @@
 #include "asset_manager.hpp"
 #include <SDL3/SDL_error.h>
-#include <SDL3_ttf/SDL_ttf.h>
 #include <fmt/format.h>
 #include <memory>
 
